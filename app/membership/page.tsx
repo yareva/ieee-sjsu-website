@@ -59,9 +59,6 @@ export default function MembershipPage() {
       <section className="relative px-4 pt-32 pb-16 bg-[#1d1d1f] text-white">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
-            <p className="text-xs font-bold tracking-[0.25em] text-[#2563eb] uppercase mb-3">
-              IEEE SJSU
-            </p>
             <h1 className="text-4xl md:text-5xl font-heading font-black mb-4 tracking-tight">
               Membership
             </h1>

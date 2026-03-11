@@ -134,7 +134,7 @@ function MiniCalendar({ selectedDate, onSelectDate, events }: {
   
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
-  const startPadding = (firstDay.getDay() + 6) % 7; // Monday start
+  const startPadding = (firstDay.getDay() + 6) % 7;
   const daysInMonth = lastDay.getDate();
   
   const today = new Date();
@@ -180,15 +180,15 @@ function MiniCalendar({ selectedDate, onSelectDate, events }: {
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   
   return (
-    <div className="bg-white border border-[#e5e5ea] rounded-2xl p-4 shadow-sm">
+    <div className="bg-white border border-[#e5e5ea] rounded-2xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <button onClick={prevMonth} className="p-1 hover:bg-[#f5f5f7] rounded-lg transition-colors">
+        <button onClick={prevMonth} className="p-2 hover:bg-[#f5f5f7] rounded-lg transition-colors">
           <ChevronLeft size={20} className="text-[#6e6e73]" />
         </button>
         <span className="font-heading font-bold text-[#1d1d1f]">
           {monthNames[month]} {year}
         </span>
-        <button onClick={nextMonth} className="p-1 hover:bg-[#f5f5f7] rounded-lg transition-colors">
+        <button onClick={nextMonth} className="p-2 hover:bg-[#f5f5f7] rounded-lg transition-colors">
           <ChevronRight size={20} className="text-[#6e6e73]" />
         </button>
       </div>
@@ -212,7 +212,6 @@ export default function EventsPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   
-  // Set current date on client-side only to avoid hydration mismatch
   useEffect(() => {
     setCurrentDate(new Date());
   }, []);
@@ -225,9 +224,6 @@ export default function EventsPage() {
       <section className="relative px-4 pt-32 pb-16 bg-[#1d1d1f] text-white">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
-            <p className="text-xs font-bold tracking-[0.25em] text-[#2563eb] uppercase mb-3">
-              IEEE SJSU
-            </p>
             <h1 className="text-4xl md:text-5xl font-heading font-black mb-4 tracking-tight">
               Events
             </h1>
@@ -238,57 +234,44 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* Calendar Section */}
-      <section className="px-4 py-12 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-[300px_1fr] gap-8">
-            {/* Mini Calendar */}
-            <AnimatedSection>
-              <MiniCalendar 
-                selectedDate={selectedDate} 
-                onSelectDate={setSelectedDate}
-                events={upcomingEvents}
-              />
-            </AnimatedSection>
-
-            {/* Upcoming Events Strip */}
-            <AnimatedSection>
-              <h2 className="text-2xl font-heading font-black text-[#1d1d1f] mb-4">
-                Upcoming Events
-              </h2>
-              <div className="space-y-4">
-                {upcomingEvents.map((event) => {
-                  const badge = getBadgeText(event.date, currentDate);
-                  return (
-                    <div 
-                      key={event.id}
-                      className="bg-white border border-[#e5e5ea] rounded-2xl p-6 hover:shadow-lg transition-shadow"
-                    >
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${categoryColors[event.category] || ''}`}>
-                          {event.category}
+      {/* Upcoming Events Section */}
+      <section className="px-4 py-16 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <AnimatedSection>
+            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-8">
+              Upcoming Events
+            </h2>
+          </AnimatedSection>
+          <div className="space-y-4">
+            {upcomingEvents.map((event) => {
+              const badge = getBadgeText(event.date, currentDate);
+              return (
+                <AnimatedSection key={event.id}>
+                  <div className="bg-white border border-[#e5e5ea] rounded-2xl p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${categoryColors[event.category] || ''}`}>
+                        {event.category}
+                      </span>
+                      {badge && (
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${badge.color}`}>
+                          {badge.text}
                         </span>
-                        {badge && (
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${badge.color}`}>
-                            {badge.text}
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="text-xl font-heading font-bold text-[#1d1d1f] mb-2">
-                        {event.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-4 text-sm text-[#6e6e73] mb-3">
-                        <span>{event.startTime} – {event.endTime}</span>
-                        <span>{event.location}</span>
-                      </div>
-                      <p className="text-[#6e6e73] text-sm">
-                        {event.description}
-                      </p>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </AnimatedSection>
+                    <h3 className="text-xl font-heading font-bold text-[#1d1d1f] mb-2">
+                      {event.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-[#6e6e73] mb-3">
+                      <span>{event.startTime} – {event.endTime}</span>
+                      <span>{event.location}</span>
+                    </div>
+                    <p className="text-[#6e6e73] text-sm">
+                      {event.description}
+                    </p>
+                  </div>
+                </AnimatedSection>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -306,7 +289,6 @@ export default function EventsPage() {
             {pastEvents.map((event) => (
               <AnimatedSection key={event.id}>
                 <div className="bg-white border border-[#e5e5ea] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all h-full flex flex-col">
-                  {/* Image placeholder */}
                   <div className="aspect-video bg-[#f5f5f7] flex items-center justify-center">
                     <span className="text-[#6e6e73] text-sm">Event Flyer</span>
                   </div>
@@ -334,8 +316,28 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Calendar Section - Moved to bottom */}
       <section className="px-4 py-16 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <AnimatedSection>
+            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-8 text-center">
+              Event Calendar
+            </h2>
+          </AnimatedSection>
+          <div className="flex justify-center">
+            <div className="w-full max-w-sm">
+              <MiniCalendar 
+                selectedDate={selectedDate} 
+                onSelectDate={setSelectedDate}
+                events={upcomingEvents}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="px-4 py-16 bg-[#f5f5f7]">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
             <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-6">
