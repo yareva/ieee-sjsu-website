@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AnimatedSection } from '@/components/animated-section';
@@ -16,8 +16,9 @@ function getDaysBetween(d1: Date, d2: Date) {
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
-function getBadgeText(eventDate: string) {
-  const today = new Date();
+function getBadgeText(eventDate: string, currentDate: Date | null) {
+  if (!currentDate) return null;
+  const today = new Date(currentDate);
   today.setHours(0, 0, 0, 0);
   const event = new Date(eventDate);
   event.setHours(0, 0, 0, 0);
@@ -209,6 +210,12 @@ function MiniCalendar({ selectedDate, onSelectDate, events }: {
 
 export default function EventsPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+  
+  // Set current date on client-side only to avoid hydration mismatch
+  useEffect(() => {
+    setCurrentDate(new Date());
+  }, []);
   
   return (
     <main className="flex flex-col min-h-screen bg-white">
@@ -251,7 +258,7 @@ export default function EventsPage() {
               </h2>
               <div className="space-y-4">
                 {upcomingEvents.map((event) => {
-                  const badge = getBadgeText(event.date);
+                  const badge = getBadgeText(event.date, currentDate);
                   return (
                     <div 
                       key={event.id}
