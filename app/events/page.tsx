@@ -4,126 +4,225 @@ import { useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AnimatedSection } from '@/components/animated-section';
-import { ChevronLeft, ChevronRight, Calendar, Clock, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function EventsPage() {
-  const [techEventIndex, setTechEventIndex] = useState(0);
-  const [socialEventIndex, setSocialEventIndex] = useState(0);
+// Helper functions
+function formatDateStr(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
-  const technicalEvents = [
-    {
-      title: 'PCB Design Workshop with Altium',
-      date: 'March 15, 2026',
-      time: '2:00 PM - 4:00 PM',
-      location: 'ENGR 376',
-      description: 'Learn professional PCB design techniques using industry-standard Altium tools.',
-      category: 'PCB Design',
-      attendees: 28,
-    },
-    {
-      title: 'Verilog for Digital Design',
-      date: 'March 22, 2026',
-      time: '3:00 PM - 5:00 PM',
-      location: 'ENGR 376',
-      description: 'Deep dive into hardware description languages and FPGA programming.',
-      category: 'Digital Design',
-      attendees: 34,
-    },
-    {
-      title: 'ECG Circuit Analysis',
-      date: 'March 29, 2026',
-      time: '2:00 PM - 4:00 PM',
-      location: 'ENGR 376',
-      description: 'Explore biomedical electronics and analog circuit design.',
-      category: 'Biomedical',
-      attendees: 22,
-    },
-    {
-      title: '32-Bit ALU Implementation',
-      date: 'April 5, 2026',
-      time: '3:00 PM - 5:00 PM',
-      location: 'ENGR 376',
-      description: 'Build a complete arithmetic logic unit from scratch.',
-      category: 'Digital Systems',
-      attendees: 31,
-    },
-  ];
+function getDaysBetween(d1: Date, d2: Date) {
+  const diff = d2.getTime() - d1.getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
 
-  const socialEvents = [
-    {
-      title: 'Networking Mixer with Intel',
-      date: 'March 20, 2026',
-      time: '5:00 PM - 7:00 PM',
-      location: 'Student Center',
-      description: 'Meet Intel engineers and explore career opportunities.',
-      category: 'Networking',
-      attendees: 45,
-    },
-    {
-      title: 'Tech Trivia Night',
-      date: 'March 27, 2026',
-      time: '6:00 PM - 8:00 PM',
-      location: 'ENGR 376',
-      description: 'Compete with other engineers in a fun tech trivia competition.',
-      category: 'Social',
-      attendees: 52,
-    },
-    {
-      title: 'End of Semester Celebration',
-      date: 'May 9, 2026',
-      time: '4:00 PM - 7:00 PM',
-      location: 'San Carlos Park',
-      description: 'BBQ, games, and celebration with the IEEE SJSU community.',
-      category: 'Celebration',
-      attendees: 78,
-    },
-  ];
+function getBadgeText(eventDate: string) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const event = new Date(eventDate);
+  event.setHours(0, 0, 0, 0);
+  const days = getDaysBetween(today, event);
+  
+  if (days === 0) return { text: 'Today', color: 'bg-[#2563eb] text-white' };
+  if (days === 1) return { text: 'Tomorrow', color: 'bg-[#2563eb]/20 text-[#2563eb]' };
+  if (days > 1 && days <= 7) return { text: `In ${days} days`, color: 'bg-[#f5f5f7] text-[#6e6e73]' };
+  return null;
+}
 
-  const moveSlider = (direction: 'prev' | 'next', setter: any, length: number, current: number) => {
-    if (direction === 'prev') {
-      setter((current - 1 + length) % length);
-    } else {
-      setter((current + 1) % length);
-    }
-  };
+const upcomingEvents = [
+  {
+    id: '1',
+    title: 'Tesla Tech Talk',
+    date: '2026-03-12',
+    startTime: '6:00 PM',
+    endTime: '8:00 PM',
+    location: 'ENGR 376',
+    category: 'Speaker',
+    description: 'Industry speaker from Tesla covering cutting-edge engineering topics.',
+  },
+  {
+    id: '2',
+    title: 'ALU Workshop',
+    date: '2026-03-13',
+    startTime: '2:00 PM',
+    endTime: '5:00 PM',
+    location: 'ENGR 376',
+    category: 'Workshop',
+    description: 'Build your own ALU from scratch using Verilog — no prior experience needed.',
+  },
+];
 
-  const EventCard = ({ event }: { event: any }) => (
-    <div className="p-6 rounded-xl border border-border bg-card hover:shadow-lg transition-all duration-200 hover:scale-105 h-full flex flex-col">
-      <div className="inline-block mb-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full w-fit">
-        {event.category}
+const pastEvents = [
+  {
+    id: 'p1',
+    title: 'Innovation Garage & Pipeline Kickoff',
+    date: 'Mar 9',
+    location: 'ENGR 376',
+    description: 'Welcome back event for the spring semester',
+    category: 'Social',
+  },
+  {
+    id: 'p2',
+    title: 'Nuvoton Networking',
+    date: 'Feb 25',
+    location: 'ENGR 376',
+    description: 'Network with Nuvoton engineers and recruiters',
+    category: 'Networking',
+  },
+  {
+    id: 'p3',
+    title: 'Renesas Networking Event',
+    date: 'Feb 18',
+    location: 'ENGR 376',
+    description: 'Exclusive networking with Renesas recruiters',
+    category: 'Networking',
+  },
+  {
+    id: 'p4',
+    title: 'Astera Labs x IEEE Networking',
+    date: 'Nov 6',
+    location: 'ENGR 376',
+    description: 'Connect with engineers from Astera Labs',
+    category: 'Networking',
+  },
+  {
+    id: 'p5',
+    title: 'Lockheed Martin Recruiter Insights',
+    date: 'Oct 31',
+    location: 'ENGR 376',
+    description: 'Career insights from Lockheed Martin',
+    category: 'Networking',
+  },
+  {
+    id: 'p6',
+    title: 'Cadence Career Talk',
+    date: 'Oct 16',
+    location: 'ENGR 376',
+    description: 'Career opportunities at Cadence',
+    category: 'Recruiting',
+  },
+  {
+    id: 'p7',
+    title: 'Cognichip Kickoff Presentation',
+    date: 'May 6',
+    location: 'ENGR 376',
+    description: 'Introduction to the Cognichip challenge',
+    category: 'Industry',
+  },
+];
+
+const categoryColors: Record<string, string> = {
+  Speaker: 'bg-[#2563eb]/10 text-[#2563eb]',
+  Workshop: 'bg-[#2563eb]/10 text-[#2563eb]',
+  Networking: 'bg-[#6e6e73]/10 text-[#6e6e73]',
+  Social: 'bg-[#6e6e73]/10 text-[#6e6e73]',
+  Recruiting: 'bg-[#6e6e73]/10 text-[#6e6e73]',
+  Industry: 'bg-[#1d1d1f]/10 text-[#1d1d1f]',
+};
+
+// Calendar Component
+function MiniCalendar({ selectedDate, onSelectDate, events }: { 
+  selectedDate: Date; 
+  onSelectDate: (d: Date) => void;
+  events: typeof upcomingEvents;
+}) {
+  const [viewDate, setViewDate] = useState(new Date());
+  
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const startPadding = (firstDay.getDay() + 6) % 7; // Monday start
+  const daysInMonth = lastDay.getDate();
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const eventDates = events.map(e => e.date);
+  
+  const prevMonth = () => setViewDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
+  
+  const days = [];
+  for (let i = 0; i < startPadding; i++) {
+    days.push(<div key={`pad-${i}`} className="h-8" />);
+  }
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const dateStr = formatDateStr(date);
+    const isToday = formatDateStr(today) === dateStr;
+    const isSelected = formatDateStr(selectedDate) === dateStr;
+    const hasEvent = eventDates.includes(dateStr);
+    
+    days.push(
+      <button
+        key={day}
+        onClick={() => onSelectDate(date)}
+        className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-medium transition-all relative ${
+          isSelected 
+            ? 'bg-[#2563eb] text-white' 
+            : isToday 
+              ? 'ring-2 ring-[#2563eb] text-[#2563eb]' 
+              : 'text-[#1d1d1f] hover:bg-[#f5f5f7]'
+        }`}
+      >
+        {day}
+        {hasEvent && !isSelected && (
+          <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#2563eb]" />
+        )}
+      </button>
+    );
+  }
+  
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
+  return (
+    <div className="bg-white border border-[#e5e5ea] rounded-2xl p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={prevMonth} className="p-1 hover:bg-[#f5f5f7] rounded-lg transition-colors">
+          <ChevronLeft size={20} className="text-[#6e6e73]" />
+        </button>
+        <span className="font-heading font-bold text-[#1d1d1f]">
+          {monthNames[month]} {year}
+        </span>
+        <button onClick={nextMonth} className="p-1 hover:bg-[#f5f5f7] rounded-lg transition-colors">
+          <ChevronRight size={20} className="text-[#6e6e73]" />
+        </button>
       </div>
-      <h3 className="text-xl font-bold text-foreground mb-3">{event.title}</h3>
-      <p className="text-sm text-muted-foreground mb-4 flex-grow">{event.description}</p>
-      <div className="space-y-2 mb-4 text-sm">
-        <div className="flex items-center gap-2 text-foreground">
-          <Calendar size={16} />
-          <span>{event.date}</span>
-        </div>
-        <div className="flex items-center gap-2 text-foreground">
-          <Clock size={16} />
-          <span>{event.time}</span>
-        </div>
-        <div className="flex items-center gap-2 text-foreground">
-          <MapPin size={16} />
-          <span>{event.location}</span>
-        </div>
+      
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+          <div key={i} className="h-8 flex items-center justify-center text-xs font-bold text-[#6e6e73]">
+            {d}
+          </div>
+        ))}
       </div>
-      <div className="text-xs text-muted-foreground">
-        {event.attendees} people interested
+      
+      <div className="grid grid-cols-7 gap-1">
+        {days}
       </div>
     </div>
   );
+}
 
+export default function EventsPage() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  
   return (
-    <main className="flex flex-col min-h-screen bg-background">
+    <main className="flex flex-col min-h-screen bg-white">
       <Navbar />
 
       {/* Header */}
-      <section className="relative px-4 py-16 md:py-24 bg-black text-white">
+      <section className="relative px-4 pt-32 pb-16 bg-[#1d1d1f] text-white">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Events & Workshops
+            <p className="text-xs font-bold tracking-[0.25em] text-[#2563eb] uppercase mb-3">
+              IEEE SJSU
+            </p>
+            <h1 className="text-4xl md:text-5xl font-heading font-black mb-4 tracking-tight">
+              Events
             </h1>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               Join us for technical workshops, professional development sessions, and community events.
@@ -132,141 +231,117 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* Technical Events */}
-      <section className="px-4 py-16 md:py-20">
+      {/* Calendar Section */}
+      <section className="px-4 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
-          <AnimatedSection className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Technical Sessions
-            </h2>
-            <p className="text-muted-foreground">
-              Learn from industry experts and hands-on technical workshops.
-            </p>
-          </AnimatedSection>
+          <div className="grid md:grid-cols-[300px_1fr] gap-8">
+            {/* Mini Calendar */}
+            <AnimatedSection>
+              <MiniCalendar 
+                selectedDate={selectedDate} 
+                onSelectDate={setSelectedDate}
+                events={upcomingEvents}
+              />
+            </AnimatedSection>
 
-          <div className="relative">
-            {/* Slider */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {[0, 1, 2].map((offset) => {
-                const index = (techEventIndex + offset) % technicalEvents.length;
-                return (
-                  <div key={offset} className={offset === 0 ? 'md:col-span-1 md:col-start-1' : ''}>
-                    <AnimatedSection>
-                      <EventCard event={technicalEvents[index]} />
-                    </AnimatedSection>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Navigation */}
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => moveSlider('prev', setTechEventIndex, technicalEvents.length, techEventIndex)}
-                className="p-3 rounded-xl border border-border hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 hover:scale-110"
-                aria-label="Previous event"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <div className="flex items-center gap-2">
-                {technicalEvents.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setTechEventIndex(i)}
-                    className={`rounded-full transition-all ${
-                      i === techEventIndex ? 'bg-primary w-8 h-2' : 'bg-border w-2 h-2'
-                    }`}
-                    aria-label={`Go to event ${i + 1}`}
-                  />
-                ))}
+            {/* Upcoming Events Strip */}
+            <AnimatedSection>
+              <h2 className="text-2xl font-heading font-black text-[#1d1d1f] mb-4">
+                Upcoming Events
+              </h2>
+              <div className="space-y-4">
+                {upcomingEvents.map((event) => {
+                  const badge = getBadgeText(event.date);
+                  return (
+                    <div 
+                      key={event.id}
+                      className="bg-white border border-[#e5e5ea] rounded-2xl p-6 hover:shadow-lg transition-shadow"
+                    >
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${categoryColors[event.category] || ''}`}>
+                          {event.category}
+                        </span>
+                        {badge && (
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${badge.color}`}>
+                            {badge.text}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-heading font-bold text-[#1d1d1f] mb-2">
+                        {event.title}
+                      </h3>
+                      <div className="flex flex-wrap gap-4 text-sm text-[#6e6e73] mb-3">
+                        <span>{event.startTime} – {event.endTime}</span>
+                        <span>{event.location}</span>
+                      </div>
+                      <p className="text-[#6e6e73] text-sm">
+                        {event.description}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
-              <button
-                onClick={() => moveSlider('next', setTechEventIndex, technicalEvents.length, techEventIndex)}
-                className="p-3 rounded-xl border border-border hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 hover:scale-110"
-                aria-label="Next event"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
 
-      {/* Social Events */}
-      <section className="px-4 py-16 md:py-20 bg-muted/50">
+      {/* Past Events Grid */}
+      <section className="px-4 py-16 bg-[#f5f5f7]">
         <div className="max-w-6xl mx-auto">
-          <AnimatedSection className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Social & Networking
+          <AnimatedSection>
+            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-8">
+              Past Events
             </h2>
-            <p className="text-muted-foreground">
-              Connect with peers, meet industry professionals, and build lasting relationships.
-            </p>
           </AnimatedSection>
 
-          <div className="relative">
-            {/* Slider */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {[0, 1, 2].map((offset) => {
-                const index = (socialEventIndex + offset) % socialEvents.length;
-                return (
-                  <div key={offset}>
-                    <AnimatedSection>
-                      <EventCard event={socialEvents[index]} />
-                    </AnimatedSection>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pastEvents.map((event) => (
+              <AnimatedSection key={event.id}>
+                <div className="bg-white border border-[#e5e5ea] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all h-full flex flex-col">
+                  {/* Image placeholder */}
+                  <div className="aspect-video bg-[#f5f5f7] flex items-center justify-center">
+                    <span className="text-[#6e6e73] text-sm">Event Flyer</span>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Navigation */}
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => moveSlider('prev', setSocialEventIndex, socialEvents.length, socialEventIndex)}
-                className="p-3 rounded-xl border border-border hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 hover:scale-110"
-                aria-label="Previous event"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <div className="flex items-center gap-2">
-                {socialEvents.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSocialEventIndex(i)}
-                    className={`rounded-full transition-all ${
-                      i === socialEventIndex ? 'bg-primary w-8 h-2' : 'bg-border w-2 h-2'
-                    }`}
-                    aria-label={`Go to event ${i + 1}`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={() => moveSlider('next', setSocialEventIndex, socialEvents.length, socialEventIndex)}
-                className="p-3 rounded-xl border border-border hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 hover:scale-110"
-                aria-label="Next event"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold text-[#6e6e73]">{event.date}</span>
+                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${categoryColors[event.category] || ''}`}>
+                        {event.category}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-heading font-bold text-[#1d1d1f] mb-2">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm text-[#6e6e73] mb-2">
+                      {event.location}
+                    </p>
+                    <p className="text-sm text-[#6e6e73] flex-1">
+                      {event.description}
+                    </p>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="px-4 py-16 md:py-20 bg-muted/30">
+      <section className="px-4 py-16 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
-            <h2 className="text-3xl font-bold text-foreground mb-6">
+            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-6">
               Stay Updated
             </h2>
-            <p className="text-lg text-muted-foreground mb-10">
+            <p className="text-lg text-[#6e6e73] mb-10">
               Join our Discord community to get notified about all IEEE SJSU events and announcements.
             </p>
             <a
               href="https://discord.gg/VwPdYWSVPS"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-transform duration-200"
+              className="inline-block px-8 py-3 bg-[#2563eb] text-white rounded-xl font-bold hover:bg-[#1d4ed8] transition-colors"
             >
               Join Our Discord
             </a>
