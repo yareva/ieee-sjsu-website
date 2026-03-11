@@ -175,35 +175,7 @@ export default function Home() {
                   Join Discord Server
                 </a>
               </div>
-              <div className="border-t border-[#e5e5ea] pt-8">
-                <p className="text-[#6e6e73] text-sm mb-4 uppercase tracking-widest font-bold">Follow Us</p>
-                <div className="flex justify-center gap-8">
-                  <a 
-                    href="https://discord.gg/VwPdYWSVPS" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-[#6e6e73] hover:text-[#1d1d1f] text-sm font-semibold transition-colors"
-                  >
-                    Discord
-                  </a>
-                  <a 
-                    href="https://instagram.com/ieee_sjsu" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-[#6e6e73] hover:text-[#1d1d1f] text-sm font-semibold transition-colors"
-                  >
-                    Instagram
-                  </a>
-                  <a 
-                    href="https://facebook.com/ieee.sjsu" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-[#6e6e73] hover:text-[#1d1d1f] text-sm font-semibold transition-colors"
-                  >
-                    Facebook
-                  </a>
-                </div>
-              </div>
+
             </AnimatedSection>
           </div>
         </section>

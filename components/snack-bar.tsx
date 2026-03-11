@@ -22,17 +22,11 @@ export function SnackBar() {
       <div className="max-w-xl mx-auto">
         {/* Apple-style compact card */}
         <div className="bg-white border border-[#e5e5ea] rounded-2xl shadow-lg p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="text-lg font-heading font-bold text-[#1d1d1f] mb-1">
-                Innovation Garage Snack Bar
-              </h3>
-              <p className="text-sm text-[#6e6e73]">Stop by ENGR 376 between classes</p>
-            </div>
-            {/* Flyer image slot */}
-            <div className="w-14 h-14 bg-[#f5f5f7] rounded-lg flex-shrink-0 hidden sm:flex items-center justify-center border border-[#e5e5ea]">
-              <span className="text-[9px] text-[#6e6e73]">Flyer</span>
-            </div>
+          <div className="mb-4">
+            <h3 className="text-lg font-heading font-bold text-[#1d1d1f] mb-1">
+              Innovation Garage Snack Bar
+            </h3>
+            <p className="text-sm text-[#6e6e73]">Stop by ENGR 376 between classes</p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6">
