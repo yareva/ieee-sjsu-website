@@ -4,39 +4,38 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Apple-style colors */
-  --background: 255 255 255;
-  --foreground: 29 29 31;
+  --background: 250 251 252;
+  --foreground: 15 23 42;
   --card: 255 255 255;
-  --card-foreground: 29 29 31;
+  --card-foreground: 15 23 42;
   --popover: 255 255 255;
-  --popover-foreground: 29 29 31;
+  --popover-foreground: 15 23 42;
   --primary: 37 99 235;
   --primary-foreground: 255 255 255;
-  --secondary: 245 245 247;
-  --secondary-foreground: 29 29 31;
-  --muted: 245 245 247;
-  --muted-foreground: 110 110 115;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 241 245 249;
+  --muted-foreground: 100 116 139;
   --accent: 37 99 235;
   --accent-foreground: 255 255 255;
   --destructive: 220 38 38;
   --destructive-foreground: 255 255 255;
-  --border: 229 229 234;
-  --input: 245 245 247;
+  --border: 226 232 240;
+  --input: 241 245 249;
   --ring: 37 99 235;
   --chart-1: 37 99 235;
-  --chart-2: 29 29 31;
+  --chart-2: 15 23 42;
   --chart-3: 59 130 246;
   --chart-4: 34 197 94;
   --chart-5: 99 102 241;
   --radius: 0.75rem;
   --sidebar: 255 255 255;
-  --sidebar-foreground: 29 29 31;
+  --sidebar-foreground: 15 23 42;
   --sidebar-primary: 37 99 235;
   --sidebar-primary-foreground: 255 255 255;
-  --sidebar-accent: 245 245 247;
-  --sidebar-accent-foreground: 29 29 31;
-  --sidebar-border: 229 229 234;
+  --sidebar-accent: 241 245 249;
+  --sidebar-accent-foreground: 15 23 42;
+  --sidebar-border: 226 232 240;
   --sidebar-ring: 37 99 235;
 }
 
@@ -258,5 +257,29 @@
     background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* ── FlipBook swoosh page-turn ── */
+  @keyframes book-flip-next {
+    0%   { transform: perspective(2400px) rotateY(0deg);     }
+    8%   { transform: perspective(2400px) rotateY(-14deg);   }
+    38%  { transform: perspective(2400px) rotateY(-80deg);   }
+    62%  { transform: perspective(2400px) rotateY(-108deg);  }
+    92%  { transform: perspective(2400px) rotateY(-170deg);  }
+    100% { transform: perspective(2400px) rotateY(-180deg);  }
+  }
+  @keyframes book-flip-prev {
+    0%   { transform: perspective(2400px) rotateY(0deg);     }
+    8%   { transform: perspective(2400px) rotateY(14deg);    }
+    38%  { transform: perspective(2400px) rotateY(80deg);    }
+    62%  { transform: perspective(2400px) rotateY(108deg);   }
+    92%  { transform: perspective(2400px) rotateY(170deg);   }
+    100% { transform: perspective(2400px) rotateY(180deg);   }
+  }
+  @keyframes flip-shadow-in {
+    0%   { opacity: 0; }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; }
   }
 }

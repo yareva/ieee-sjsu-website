@@ -1,160 +1,131 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { AnimatedSection } from '@/components/animated-section';
-import { Mail } from 'lucide-react';
+import { executives, departments } from '@/lib/data';
+import type { TeamMember } from '@/lib/data';
+import { Linkedin } from 'lucide-react';
+
+function Avatar({ member, size = 'md' }: { member: TeamMember; size?: 'sm' | 'md' | 'lg' }) {
+  const initials = member.name === 'Add Name' ? '?'
+    : member.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  const sz = size === 'lg'
+    ? 'w-20 h-20 text-xl'
+    : size === 'md'
+    ? 'w-12 h-12 text-sm'
+    : 'w-9 h-9 text-xs';
+  return member.photo ? (
+    <img src={member.photo} alt={member.name} className={`${sz} rounded-full object-cover ring-2 ring-slate-200 shrink-0`} />
+  ) : (
+    <div className={`${sz} rounded-full bg-blue-600 flex items-center justify-center font-bold text-white shrink-0`}>
+      {initials}
+    </div>
+  );
+}
 
 export default function TeamPage() {
-  const team = [
-    {
-      name: 'Alex Chen',
-      role: 'Chapter Chair',
-      initials: 'AC',
-      email: 'alex.chen@sjsu.edu',
-      bio: 'Leading IEEE SJSU with a passion for PCB design and hardware innovation.',
-    },
-    {
-      name: 'Sarah Martinez',
-      role: 'Vice Chair',
-      initials: 'SM',
-      email: 'sarah.martinez@sjsu.edu',
-      bio: 'Coordinating technical workshops and member engagement initiatives.',
-    },
-    {
-      name: 'James Wilson',
-      role: 'Treasurer',
-      initials: 'JW',
-      email: 'james.wilson@sjsu.edu',
-      bio: 'Managing club finances and sponsorship partnerships.',
-    },
-    {
-      name: 'Emily Rodriguez',
-      role: 'Technical Lead',
-      initials: 'ER',
-      email: 'emily.rodriguez@sjsu.edu',
-      bio: 'Directing PCB design and digital electronics projects.',
-    },
-    {
-      name: 'Michael Park',
-      role: 'Events Coordinator',
-      initials: 'MP',
-      email: 'michael.park@sjsu.edu',
-      bio: 'Organizing workshops, seminars, and networking events.',
-    },
-    {
-      name: 'Jessica Thompson',
-      role: 'Social Media Manager',
-      initials: 'JT',
-      email: 'jessica.thompson@sjsu.edu',
-      bio: 'Keeping the community connected through digital platforms.',
-    },
-  ];
-
   return (
-    <main className="flex flex-col min-h-screen bg-white">
+    <main className="flex flex-col min-h-screen bg-slate-50">
       <Navbar />
 
-      {/* Header */}
-      <section className="relative px-4 pt-32 pb-16 bg-[#1d1d1f] text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <AnimatedSection>
-            <h1 className="text-4xl md:text-5xl font-heading font-black mb-4 tracking-tight">
-              Our Team
-            </h1>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              Meet the passionate engineers and visionaries driving IEEE SJSU forward.
-            </p>
-          </AnimatedSection>
-        </div>
+      {/* HEADER */}
+      <section className="bg-white border-b border-slate-200 pt-36 pb-16 px-8 text-center">
+        <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-3">IEEE SJSU</p>
+        <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">Meet the Team</h1>
+        <p className="text-slate-500 text-lg max-w-xl mx-auto leading-relaxed">
+          The board behind the workshops, events, and projects that make IEEE SJSU run.
+        </p>
       </section>
 
-      {/* Team Grid */}
-      <section className="px-4 py-16 md:py-20 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, i) => (
-              <AnimatedSection key={i}>
-                <div className="group p-6 rounded-2xl border border-[#e5e5ea] bg-white hover:border-[#2563eb]/30 hover:shadow-lg hover:-translate-y-1 transition-all h-full flex flex-col">
-                  {/* Avatar */}
-                  <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] flex items-center justify-center text-lg font-bold text-white mb-4 group-hover:scale-110 transition-transform">
-                    {member.initials}
-                  </div>
-
-                  {/* Info */}
-                  <h3 className="text-xl font-heading font-bold text-[#1d1d1f] mb-1">{member.name}</h3>
-                  <p className="text-[#2563eb] font-semibold text-sm mb-3">{member.role}</p>
-                  <p className="text-sm text-[#6e6e73] mb-6 flex-grow leading-relaxed">{member.bio}</p>
-
-                  {/* Contact */}
-                  <div className="pt-4 border-t border-[#e5e5ea]">
-                    <a
-                      href={`mailto:${member.email}`}
-                      className="flex items-center gap-2 text-sm font-medium text-[#6e6e73] hover:text-[#2563eb] transition-colors"
-                      title={`Email ${member.name}`}
-                    >
-                      <Mail size={16} />
-                      <span>{member.email}</span>
-                    </a>
-                  </div>
-                </div>
-              </AnimatedSection>
+      {/* EXECUTIVES */}
+      <section className="py-16 px-8">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-[10px] font-bold tracking-[0.3em] text-slate-400 uppercase text-center mb-8">Executive Board</p>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {executives.map((exec) => (
+              <div key={exec.role} className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center text-center shadow-sm hover:shadow-md hover:border-blue-200 transition-all">
+                <Avatar member={exec} size="lg" />
+                <p className="mt-4 text-xl font-black text-slate-900 leading-tight">{exec.name}</p>
+                <p className="text-blue-600 text-sm font-semibold mt-1.5 mb-4">{exec.role}</p>
+                {exec.linkedin ? (
+                  <a href={exec.linkedin} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-full border border-slate-200 hover:border-blue-200">
+                    <Linkedin size={12} />
+                    LinkedIn
+                  </a>
+                ) : (
+                  <span className="text-xs text-slate-300 italic">No LinkedIn</span>
+                )}
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="px-4 py-16 md:py-20 bg-[#f5f5f7]">
-        <div className="max-w-4xl mx-auto">
-          <AnimatedSection className="text-center mb-12">
-            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-4">Our Values</h2>
-            <p className="text-[#6e6e73]">
-              These principles guide everything we do at IEEE SJSU.
-            </p>
-          </AnimatedSection>
+      {/* DIVIDER */}
+      <div className="max-w-7xl mx-auto px-8 w-full">
+        <div className="border-t border-slate-200" />
+      </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: 'Innovation',
-                description: 'Pushing the boundaries of technology and engineering excellence.',
-              },
-              {
-                title: 'Collaboration',
-                description: 'Working together to solve complex technical challenges.',
-              },
-              {
-                title: 'Excellence',
-                description: 'Maintaining the highest standards in all our endeavors.',
-              },
-            ].map((value, i) => (
-              <AnimatedSection key={i}>
-                <div className="p-6 rounded-2xl border border-[#e5e5ea] bg-white hover:shadow-lg transition-shadow">
-                  <h3 className="text-lg font-heading font-bold text-[#1d1d1f] mb-2">{value.title}</h3>
-                  <p className="text-sm text-[#6e6e73]">{value.description}</p>
+      {/* DEPARTMENTS */}
+      <section className="py-16 px-8 pb-24">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-[10px] font-bold tracking-[0.3em] text-slate-400 uppercase text-center mb-10">Departments</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {departments.map((dept) => (
+              <div key={dept.id} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-slate-300 transition-all flex flex-col">
+
+                {/* Dept header */}
+                <div className="px-5 py-4 flex items-center gap-3 border-b border-slate-100">
+                  <span className={`w-3 h-3 rounded-full ${dept.color} shrink-0`} />
+                  <div>
+                    <p className="font-black text-slate-900 text-sm leading-tight">{dept.name}</p>
+                    <p className="text-slate-400 text-xs leading-tight mt-0.5">{dept.description}</p>
+                  </div>
                 </div>
-              </AnimatedSection>
+
+                {/* Lead */}
+                <div className="px-5 pt-4 pb-3">
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Lead</p>
+                  <div className="flex items-center gap-3">
+                    <Avatar member={dept.lead} size="md" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-slate-900 leading-tight truncate">{dept.lead.name}</p>
+                      <p className="text-xs text-slate-400 leading-tight">{dept.lead.role}</p>
+                    </div>
+                    {dept.lead.linkedin && (
+                      <a href={dept.lead.linkedin} target="_blank" rel="noopener noreferrer"
+                        className="shrink-0 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                        <Linkedin size={13} className="text-blue-500" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Officers */}
+                {dept.officers.length > 0 && (
+                  <div className="px-5 pb-4 pt-1 border-t border-slate-100 flex-1">
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2 mt-3">Officers</p>
+                    <div className="space-y-2.5">
+                      {dept.officers.map((officer, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <Avatar member={officer} size="sm" />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-semibold text-slate-800 leading-tight truncate">{officer.name}</p>
+                            <p className="text-[11px] text-slate-400 leading-tight">{officer.role}</p>
+                          </div>
+                          {officer.linkedin && (
+                            <a href={officer.linkedin} target="_blank" rel="noopener noreferrer"
+                              className="shrink-0 p-1 rounded hover:bg-slate-100 transition-colors">
+                              <Linkedin size={11} className="text-blue-400" />
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Join Team CTA */}
-      <section className="px-4 py-16 md:py-20 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <AnimatedSection>
-            <h2 className="text-3xl font-heading font-black text-[#1d1d1f] mb-6">
-              Join Our Growing Community
-            </h2>
-            <p className="text-lg text-[#6e6e73] mb-8">
-              Be part of something special. Whether you&apos;re looking to lead, contribute, or learn, there&apos;s a place for you.
-            </p>
-            <a
-              href="/membership"
-              className="inline-block px-8 py-3 bg-[#2563eb] text-white rounded-xl font-bold hover:bg-[#1d4ed8] transition-colors"
-            >
-              Become a Member
-            </a>
-          </AnimatedSection>
         </div>
       </section>
 

@@ -3,10 +3,7 @@
 import { ExternalLink } from 'lucide-react';
 
 export function SnackBar() {
-  const drinks = [
-    { name: 'Red Bull Energy Drink', price: '$3.00' },
-  ];
-
+  const drinks = [{ name: 'Red Bull Energy Drink', price: '$3.00' }];
   const snacks = [
     { name: 'Doritos Nacho Cheese', price: '$1.50' },
     { name: 'Doritos Cool Ranch', price: '$1.50' },
@@ -18,55 +15,45 @@ export function SnackBar() {
   ];
 
   return (
-    <section className="py-12 px-4 bg-white">
+    <section className="py-8 px-4 bg-slate-50">
       <div className="max-w-xl mx-auto">
-        {/* Apple-style compact card */}
-        <div className="bg-white border border-[#e5e5ea] rounded-2xl shadow-lg p-6">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
           <div className="mb-4">
-            <h3 className="text-lg font-heading font-bold text-[#1d1d1f] mb-1">
-              Innovation Garage Snack Bar
-            </h3>
-            <p className="text-sm text-[#6e6e73]">Stop by ENGR 376 between classes</p>
+            <h3 className="text-lg font-heading font-bold text-slate-900 mb-1">Innovation Garage Snack Bar</h3>
+            <p className="text-sm text-slate-500">Stop by ENGR 376 between classes</p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6">
-            {/* Drinks column */}
             <div>
-              <h4 className="text-xs font-bold text-[#2563eb] mb-3 uppercase tracking-widest">
-                Drinks
-              </h4>
+              <h4 className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-widest">Drinks</h4>
               <ul className="space-y-2">
                 {drinks.map((item, i) => (
-                  <li key={i} className="flex justify-between items-center text-sm">
-                    <span className="text-[#1d1d1f]">{item.name}</span>
-                    <span className="text-[#6e6e73] font-medium">{item.price}</span>
+                  <li key={i} className="flex justify-between text-sm">
+                    <span className="text-slate-600">{item.name}</span>
+                    <span className="font-semibold text-slate-900">{item.price}</span>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Snacks column */}
             <div>
-              <h4 className="text-xs font-bold text-[#2563eb] mb-3 uppercase tracking-widest">
-                Snacks
-              </h4>
+              <h4 className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-widest">Snacks</h4>
               <ul className="space-y-2">
                 {snacks.map((item, i) => (
-                  <li key={i} className="flex justify-between items-center text-sm">
-                    <span className="text-[#1d1d1f]">{item.name}</span>
-                    <span className="text-[#6e6e73] font-medium">{item.price}</span>
+                  <li key={i} className="flex justify-between text-sm">
+                    <span className="text-slate-600">{item.name}</span>
+                    <span className="font-semibold text-slate-900">{item.price}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[#e5e5ea]">
+          <div className="mt-6 pt-4 border-t border-slate-100">
             <a
-              href="https://tinyurl.com/IEEE-sjsu"
+              href="https://square.link/u/ieee-sjsu"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#2563eb] text-white rounded-xl font-semibold text-sm hover:bg-[#1d4ed8] transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors"
             >
               Pay via Square
               <ExternalLink size={14} />

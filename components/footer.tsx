@@ -6,7 +6,7 @@ import { Mail, MapPin, ExternalLink } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-[#1d1d1f] text-white py-12 md:py-16">
+    <footer className="bg-slate-950 text-white py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Logo Section */}
         <div className="flex items-center justify-center mb-12">
