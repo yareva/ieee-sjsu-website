@@ -37,7 +37,7 @@ export function Navbar({ primaryAction = "Join Now", transparent = false }: Navb
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
 
-          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
+          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity -ml-4">
             <Image
               src="/ieee-mb.png"
               alt="IEEE SJSU Logo"

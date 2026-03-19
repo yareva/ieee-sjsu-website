@@ -37,14 +37,11 @@ export default function ProjectsPage() {
       <Navbar />
 
       {/* HEADER */}
-      <section className="pt-32 pb-16 px-8 bg-slate-900 text-white text-center">
-        <AnimatedSection>
-          <p className="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-3">IEEE SJSU</p>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-4">Projects & Workshops</h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Cutting-edge hardware projects and hands-on workshops in PCB design, digital logic, and embedded systems.
-          </p>
-        </AnimatedSection>
+      <section className="pt-32 pb-10 px-8 border-b border-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">Projects & Workshops</h1>
+          <p className="text-slate-500 mt-2">Hardware builds, PCB design, digital logic, and hands-on workshops.</p>
+        </div>
       </section>
 
       {/* FEATURED PROJECTS */}

@@ -14,6 +14,7 @@ const categoryColors: Record<string, string> = {
   Social:     'bg-slate-100 text-slate-600',
   Recruiting: 'bg-slate-100 text-slate-600',
   Industry:   'bg-slate-800 text-white',
+  Hackathon:  'bg-purple-100 text-purple-700',
 };
 
 function getBadge(dateStr: string, today: Date | null) {
@@ -52,14 +53,11 @@ export default function EventsPage() {
       <Navbar />
 
       {/* HEADER */}
-      <section className="pt-32 pb-16 px-8 bg-slate-900 text-white text-center">
-        <AnimatedSection>
-          <p className="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-3">IEEE SJSU</p>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-4">Events</h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Workshops, speaker series, networking, and more — all at ENGR 376.
-          </p>
-        </AnimatedSection>
+      <section className="pt-32 pb-10 px-8 border-b border-slate-100">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">Events</h1>
+          <p className="text-slate-500 mt-2">Workshops, speaker series, networking, and more.</p>
+        </div>
       </section>
 
       {/* UPCOMING EVENTS */}

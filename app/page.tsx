@@ -40,9 +40,10 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
           <div className="relative z-10 px-8 md:px-16 pb-16 md:pb-24 w-full">
             <AnimatedSection>
-              <p className="text-white/50 text-xs font-bold tracking-[0.35em] uppercase mb-4">IEEE SJSU · Student Chapter</p>
-              <h1 className="text-[clamp(3.5rem,10vw,8rem)] font-black text-white leading-none tracking-tighter uppercase">
-                IEEE<br />San Jose State
+              <h1 className="font-black text-white leading-tight tracking-tight uppercase">
+                <span className="block text-[clamp(3.5rem,8vw,7rem)]">IEEE</span>
+                <span className="block text-[clamp(1.1rem,2.2vw,2rem)] font-semibold tracking-[0.15em] text-white/70">San José State</span>
+                <span className="block text-[clamp(0.6rem,1vw,0.8rem)] font-bold tracking-[0.3em] text-white/40 mt-1">Student Chapter</span>
               </h1>
               <p className="text-white/60 text-base mt-4 mb-8 max-w-sm tracking-wide">
                 Advancing Technology · Innovation · Community
@@ -109,20 +110,20 @@ export default function Home() {
             {/* Stats — compact */}
             <div className="md:pr-12">
               <AnimatedSection>
-                <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-3">By the Numbers</p>
+                <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-3">IEEE SJSU</p>
                 <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-none mb-6">
-                  What We've<br />Built
+                  Our<br />Impact
                 </h2>
-                <div className="grid grid-cols-2 gap-px bg-slate-200 rounded-2xl overflow-hidden border border-slate-200">
+                <div className="flex flex-col gap-5">
                   {[
-                    { n: '7+',   label: 'Workshops' },
-                    { n: '5+',   label: 'Partners' },
-                    { n: '100+', label: 'Members' },
-                    { n: '2',    label: 'Semesters' },
+                    { n: '300+', label: 'Members & growing' },
+                    { n: '10+',  label: 'Industry partners' },
+                    { n: '15+',  label: 'Events per semester' },
+                    { n: '5+',   label: 'Active projects' },
                   ].map((s) => (
-                    <div key={s.label} className="bg-white px-5 py-5">
-                      <p className="text-3xl font-black text-slate-900 mb-0.5">{s.n}</p>
-                      <p className="text-slate-500 text-xs">{s.label}</p>
+                    <div key={s.label} className="flex items-baseline gap-3 border-b border-slate-100 pb-4 last:border-0 last:pb-0">
+                      <p className="text-4xl font-black text-blue-600 leading-none">{s.n}</p>
+                      <p className="text-slate-500 text-sm font-medium">{s.label}</p>
                     </div>
                   ))}
                 </div>

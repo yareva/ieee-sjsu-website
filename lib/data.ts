@@ -3,37 +3,76 @@
 //  Edit this file to update events and projects across the site.
 // ============================================================
 
-// ─── EVENTS ──────────────────────────────────────────────────
-// To add an upcoming event: copy a block into upcomingEvents
-// To add a past event:      copy a block into pastEvents
-// image: path to a file in /public, e.g. '/flyers/my-event.jpg'
-//        or leave as null for a placeholder
+// ─── HOW TO ADD AN EVENT ─────────────────────────────────────
+//
+//  1. Drop the flyer image in /public/flyers/ (e.g. my-event.jpg)
+//  2. Copy one of the blocks below and fill it in.
+//  3. Upcoming events  → add to upcomingEvents[]  (date: 'YYYY-MM-DD')
+//     Past events      → move it to pastEvents[]  (date: 'Mon DD, YYYY')
+//
+//  Fields:
+//    id          unique string, e.g. 'u-networking-apple'
+//    title       event name
+//    date        upcoming: '2026-04-17'   past: 'Apr 17, 2026'
+//    startTime   '6:00 PM'  (optional)
+//    endTime     '8:00 PM'  (optional)
+//    location    room / building
+//    category    one of: Speaker | Workshop | Networking | Social | Recruiting | Industry | Hackathon
+//    description one or two sentences shown on the card
+//    image       '/flyers/my-event.jpg'  or  null  for a placeholder
+//
+// ─────────────────────────────────────────────────────────────
 
 export interface Event {
   id: string;
   title: string;
-  date: string;         // "YYYY-MM-DD" for upcoming, "Mon DD, YYYY" for past
+  date: string;
   startTime?: string;
   endTime?: string;
   location: string;
-  category: 'Speaker' | 'Workshop' | 'Networking' | 'Social' | 'Recruiting' | 'Industry';
+  category: 'Speaker' | 'Workshop' | 'Networking' | 'Social' | 'Recruiting' | 'Industry' | 'Hackathon';
   description: string;
   image: string | null;
 }
 
 export const upcomingEvents: Event[] = [
-  // ── Add upcoming events here ──────────────────────────────
-  // {
-  //   id: 'u3',
-  //   title: 'My New Event',
-  //   date: '2026-04-10',
-  //   startTime: '5:00 PM',
-  //   endTime: '7:00 PM',
-  //   location: 'ENGR 376',
-  //   category: 'Workshop',
-  //   description: 'Description here.',
-  //   image: null,
-  // },
+  // ── ADD NEW UPCOMING EVENTS HERE (soonest first) ──────────
+
+  {
+    id: 'u-networking-apple',
+    title: 'Networking Night with an Apple Engineer',
+    date: '2026-03-26',           // ← update to actual date
+    startTime: '6:00 PM',
+    endTime: '8:00 PM',
+    location: 'ENGR 376',
+    category: 'Networking',
+    description: 'Connect one-on-one with a software engineer from Apple. Great opportunity to ask about internships, full-time roles, and life at Apple.',
+    image: null,                  // ← swap with '/flyers/networking-apple.jpg' once you have the flyer
+  },
+
+  {
+    id: 'u-hackathon-info',
+    title: 'AI Hackathon — Info Session',
+    date: '2026-04-10',           // ← update to actual date
+    startTime: '6:00 PM',
+    endTime: '7:00 PM',
+    location: 'ENGR 376',
+    category: 'Workshop',
+    description: 'Everything you need to know before the AI Hackathon: team formation, judging criteria, tools, and prizes.',
+    image: null,
+  },
+
+  {
+    id: 'u-hackathon',
+    title: 'IEEE SJSU AI Hackathon',
+    date: '2026-04-17',           // first day (Fri)
+    startTime: 'Fri Apr 17',
+    endTime:   'Sat Apr 18',
+    location: 'TBD',
+    category: 'Hackathon',
+    description: 'Two-day AI Hackathon — build something with AI, compete for prizes, and meet engineers from industry. April 17–18.',
+    image: null,
+  },
 ];
 
 export const pastEvents: Event[] = [
