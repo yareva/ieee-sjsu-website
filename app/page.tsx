@@ -14,7 +14,13 @@ const HERO_VIDEO: string | null = null;
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = ['/astera_lab.jpg', '/Image 2.jpeg', '/image_4.jpg'];
+  const slides = [
+    '/Apple Speaker Event 2.jpg',
+    '/Innovation Garage Event 2.jpg',
+    '/Nuvoton Workshop 2.jpg',
+    '/Altium PCB Design Workshop.jpg',
+    '/astera_lab.jpg',
+  ];
 
   useEffect(() => {
     if (HERO_VIDEO) return;
@@ -37,17 +43,16 @@ export default function Home() {
                 style={{ backgroundImage: `url("${slide}")`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: i === currentSlide ? 1 : 0 }} />
             ))
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-          <div className="relative z-10 px-8 md:px-16 pb-16 md:pb-24 w-full">
+          <div className="absolute inset-0 bg-black/55" />
+          <div className="relative z-10 px-10 md:px-20 pb-20 md:pb-28 w-full">
             <AnimatedSection>
-              <h1 className="font-black text-white leading-tight tracking-tight uppercase">
-                <span className="block text-[clamp(3.5rem,8vw,7rem)]">IEEE</span>
-                <span className="block text-[clamp(1.1rem,2.2vw,2rem)] font-semibold tracking-[0.15em] text-white/70">San José State</span>
-                <span className="block text-[clamp(0.6rem,1vw,0.8rem)] font-bold tracking-[0.3em] text-white/40 mt-1">Student Chapter</span>
+              <h1 className="font-bold text-white leading-none tracking-tight uppercase text-[clamp(4rem,10vw,8rem)]" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
+                IEEE
               </h1>
-              <p className="text-white/60 text-base mt-4 mb-8 max-w-sm tracking-wide">
-                Advancing Technology · Innovation · Community
+              <p className="text-white/70 text-sm md:text-base font-medium tracking-[0.2em] uppercase mt-2 mb-1">
+                San José State University
               </p>
+              <p className="text-white/35 text-xs tracking-[0.3em] uppercase mb-8">Student Chapter</p>
               <div className="flex flex-wrap gap-3">
                 <a href="/projects" className="px-6 py-3 bg-white text-slate-900 font-bold text-xs uppercase tracking-widest rounded-full hover:bg-slate-100 transition-colors">
                   Explore Projects
@@ -84,9 +89,9 @@ export default function Home() {
         {/* ── 3. THREE-PANEL GRID — dark photos ── */}
         <section className="grid grid-cols-1 md:grid-cols-3">
           {[
-            { img: '/astera_lab.jpg',  label: 'Our',      title: 'PROJECTS', href: '/projects', cta: 'View Projects' },
-            { img: '/Image 2.jpeg',    label: 'Attend an', title: 'EVENT',    href: '/events',   cta: 'See Schedule'  },
-            { img: '/image_4.jpg',     label: 'Meet the',  title: 'TEAM',     href: '/team',     cta: 'Meet the Team' },
+            { img: '/Altium PCB Design Workshop.jpg', label: 'Our',       title: 'PROJECTS', href: '/projects', cta: 'View Projects' },
+            { img: '/Innovation Garage Event 3.jpg', label: 'Attend an', title: 'EVENT',    href: '/events',   cta: 'See Schedule'  },
+            { img: '/Nuvoton Workshop 2.jpg',        label: 'Meet the',  title: 'TEAM',     href: '/team',     cta: 'Meet the Team' },
           ].map((panel) => (
             <a key={panel.title} href={panel.href} className="relative group overflow-hidden" style={{ height: '460px' }}>
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -103,35 +108,12 @@ export default function Home() {
           ))}
         </section>
 
-        {/* ── 4. STATS | CALENDAR | SPONSORSHIP ── */}
+        {/* ── 4. CALENDAR | SPONSORSHIP ── */}
         <section className="bg-white py-24 px-8 md:px-20">
-          <div className="grid md:grid-cols-[1fr_2fr_2fr] divide-x divide-slate-200">
-
-            {/* Stats — compact */}
-            <div className="md:pr-12">
-              <AnimatedSection>
-                <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-3">IEEE SJSU</p>
-                <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-none mb-6">
-                  Our<br />Impact
-                </h2>
-                <div className="flex flex-col gap-5">
-                  {[
-                    { n: '300+', label: 'Members & growing' },
-                    { n: '10+',  label: 'Industry partners' },
-                    { n: '15+',  label: 'Events per semester' },
-                    { n: '5+',   label: 'Active projects' },
-                  ].map((s) => (
-                    <div key={s.label} className="flex items-baseline gap-3 border-b border-slate-100 pb-4 last:border-0 last:pb-0">
-                      <p className="text-4xl font-black text-blue-600 leading-none">{s.n}</p>
-                      <p className="text-slate-500 text-sm font-medium">{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </AnimatedSection>
-            </div>
+          <div className="grid md:grid-cols-2 divide-x divide-slate-200">
 
             {/* Scrollable Calendar */}
-            <div className="md:px-16">
+            <div className="md:pr-16">
               <AnimatedSection>
                 <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-4">Stay in the Loop</p>
                 <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-6">
@@ -201,7 +183,7 @@ export default function Home() {
             </div>
 
             {/* Sponsorship Packet FlipBook */}
-            <div className="md:pl-16">
+            <div className="md:pl-16 mt-12 md:mt-0">
               <AnimatedSection>
                 <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-4">Partner With Us</p>
                 <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-6">

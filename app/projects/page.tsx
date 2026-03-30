@@ -45,68 +45,42 @@ export default function ProjectsPage() {
       </section>
 
       {/* FEATURED PROJECTS */}
-      <section className="px-8 md:px-16 py-20 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <AnimatedSection>
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-10">Featured Projects</h2>
-          </AnimatedSection>
-
-          {featuredProjects.length === 0 ? (
-            <div className="py-16 text-center border border-dashed border-slate-200 rounded-2xl">
-              <p className="text-slate-400">No featured projects yet. Add one in <code className="text-blue-600">lib/data.ts</code>.</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Hero — first project */}
-              <AnimatedSection>
-                <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                  <div className="grid md:grid-cols-2">
-                    <div className="aspect-video md:aspect-auto min-h-[260px] bg-slate-100 flex items-center justify-center">
-                      {featuredProjects[0].image
-                        ? <img src={featuredProjects[0].image} alt={featuredProjects[0].title} className="w-full h-full object-cover" />
-                        : <span className="text-slate-400 text-sm">Project Image</span>
-                      }
-                    </div>
-                    <div className="p-8 md:p-12 flex flex-col justify-center">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 w-fit ${categoryColors[featuredProjects[0].category] || 'bg-slate-100 text-slate-600'}`}>
-                        {featuredProjects[0].category}
-                      </span>
-                      <h3 className="text-3xl font-black text-slate-900 mb-4">{featuredProjects[0].title}</h3>
-                      <p className="text-slate-500 text-lg leading-relaxed mb-4">{featuredProjects[0].description}</p>
-                      <p className="text-sm text-slate-400">{featuredProjects[0].date}</p>
-                    </div>
-                  </div>
+      <section className="bg-white">
+        {featuredProjects.length === 0 ? (
+          <div className="py-16 text-center border border-dashed border-slate-200 rounded-2xl mx-8">
+            <p className="text-slate-400">No featured projects yet. Add one in <code className="text-blue-600">lib/data.ts</code>.</p>
+          </div>
+        ) : (
+          featuredProjects.map((project, i) => (
+            <AnimatedSection key={project.id}>
+              <div className={`grid md:grid-cols-2 min-h-[520px] ${i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
+                {/* Image */}
+                <div className="relative bg-slate-900 overflow-hidden min-h-[300px]">
+                  {project.image
+                    ? <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-90" />
+                    : <div className="absolute inset-0 bg-slate-800" />
+                  }
+                  <div className="absolute inset-0 bg-black/20" />
                 </div>
-              </AnimatedSection>
-
-              {/* Remaining featured projects */}
-              {featuredProjects.length > 1 && (
-                <div className="grid md:grid-cols-2 gap-6">
-                  {featuredProjects.slice(1).map((project) => (
-                    <AnimatedSection key={project.id}>
-                      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-300 hover:shadow-md transition-all h-full flex flex-col">
-                        <div className="aspect-video bg-slate-100 flex items-center justify-center">
-                          {project.image
-                            ? <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                            : <span className="text-slate-400 text-sm">Project Image</span>
-                          }
-                        </div>
-                        <div className="p-6 flex-1 flex flex-col">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-3 w-fit ${categoryColors[project.category] || 'bg-slate-100 text-slate-600'}`}>
-                            {project.category}
-                          </span>
-                          <h3 className="text-xl font-black text-slate-900 mb-2">{project.title}</h3>
-                          <p className="text-sm text-slate-500 leading-relaxed flex-1">{project.description}</p>
-                          <p className="text-xs text-slate-400 mt-3">{project.date}</p>
-                        </div>
-                      </div>
-                    </AnimatedSection>
-                  ))}
+                {/* Text */}
+                <div className={`flex flex-col justify-center px-12 md:px-16 py-16 ${i % 2 === 0 ? 'bg-slate-950' : 'bg-white'}`}>
+                  <p className={`text-xs font-bold tracking-[0.3em] uppercase mb-4 ${i % 2 === 0 ? 'text-blue-400' : 'text-blue-600'}`}>
+                    {project.category}
+                  </p>
+                  <h3 className={`text-3xl md:text-4xl font-black leading-tight mb-5 tracking-tight ${i % 2 === 0 ? 'text-white' : 'text-slate-900'}`}>
+                    {project.title}
+                  </h3>
+                  <p className={`text-base leading-relaxed max-w-sm ${i % 2 === 0 ? 'text-slate-400' : 'text-slate-500'}`}>
+                    {project.description}
+                  </p>
+                  <p className={`text-xs mt-6 font-medium tracking-widest uppercase ${i % 2 === 0 ? 'text-slate-600' : 'text-slate-400'}`}>
+                    {project.date}
+                  </p>
                 </div>
-              )}
-            </div>
-          )}
-        </div>
+              </div>
+            </AnimatedSection>
+          ))
+        )}
       </section>
 
       {/* WORKSHOPS CAROUSEL */}

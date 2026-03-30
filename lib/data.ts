@@ -41,13 +41,13 @@ export const upcomingEvents: Event[] = [
   {
     id: 'u-networking-apple',
     title: 'Networking Night with an Apple Engineer',
-    date: '2026-03-26',           // ← update to actual date
+    date: '2026-03-26',
     startTime: '6:00 PM',
     endTime: '8:00 PM',
     location: 'ENGR 376',
     category: 'Networking',
     description: 'Connect one-on-one with a software engineer from Apple. Great opportunity to ask about internships, full-time roles, and life at Apple.',
-    image: null,                  // ← swap with '/flyers/networking-apple.jpg' once you have the flyer
+    image: '/Apple Speaker Event.jpg',
   },
 
   {
@@ -106,7 +106,7 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Social',
     description: 'Welcome back event kicking off the spring semester with lab tours and project pipeline reveals.',
-    image: null,
+    image: '/Innovation Garage Event.jpg',
   },
   {
     id: 'p2',
@@ -115,7 +115,7 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Workshop',
     description: 'End-to-end PCB design workflow using Altium Designer with industry professionals.',
-    image: null,
+    image: '/Altium PCB Design Workshop.jpg',
   },
   {
     id: 'p3',
@@ -124,7 +124,7 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Workshop',
     description: 'Hands-on microcontroller programming with engineers from Nuvoton Technology.',
-    image: null,
+    image: '/Nuvoton Workshop.jpg',
   },
   {
     id: 'p4',
@@ -142,7 +142,7 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Networking',
     description: 'Connect with engineers from Astera Labs — a Silicon Valley connectivity leader.',
-    image: null,
+    image: '/astera_lab.jpg',
   },
   {
     id: 'p6',
@@ -190,15 +190,30 @@ export interface Project {
 }
 
 export const featuredProjects: Project[] = [
-  // ── Add featured projects here ────────────────────────────
-  // {
-  //   id: 'proj-1',
-  //   title: 'My Project',
-  //   category: 'Active Project',
-  //   description: 'Description here.',
-  //   date: 'Spring 2026',
-  //   image: null,
-  // },
+  {
+    id: 'proj-ecg',
+    title: 'ECG Wearable Monitor',
+    category: 'Active Project',
+    description: 'A student-built wearable ECG device capable of real-time heart rate monitoring and arrhythmia detection. Designed from the ground up — analog front-end, PCB layout, and embedded firmware.',
+    date: 'Spring 2026',
+    image: '/image_4.jpg',
+  },
+  {
+    id: 'proj-cognichip',
+    title: 'Cognichip Chip Design Competition',
+    category: 'Industry Challenge',
+    description: 'IEEE SJSU competed in Cognichip\'s chip design challenge — a Silicon Valley startup pushing the frontier of AI hardware. Students tackled real IC design problems under industry mentorship.',
+    date: 'May 2025',
+    image: '/image_5.jpg',
+  },
+  {
+    id: 'proj-englehart',
+    title: 'Mike Englehart Industry Lecture',
+    category: 'Speaker Event',
+    description: 'An in-depth industry lecture covering real-world electrical engineering career paths, embedded systems design, and what it takes to break into top hardware companies.',
+    date: 'Fall 2025',
+    image: '/image_3.png',
+  },
 ];
 
 export interface Workshop {
@@ -226,7 +241,7 @@ export const workshops: Workshop[] = [
     date: 'Mar 6, 2026',
     description: 'End-to-end PCB design using Altium Designer.',
     tag: 'PCB Design',
-    image: null,
+    image: '/Altium PCB Design Workshop.jpg',
   },
   {
     id: 'ws-nuvoton',
@@ -234,7 +249,7 @@ export const workshops: Workshop[] = [
     date: 'Feb 25, 2026',
     description: 'Hands-on microcontroller programming with industry professionals.',
     tag: 'Microcontrollers',
-    image: null,
+    image: '/Nuvoton Workshop.jpg',
   },
   {
     id: 'ws-qspice',
