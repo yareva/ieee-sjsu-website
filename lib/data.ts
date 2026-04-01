@@ -33,22 +33,11 @@ export interface Event {
   category: 'Speaker' | 'Workshop' | 'Networking' | 'Social' | 'Recruiting' | 'Industry' | 'Hackathon';
   description: string;
   image: string | null;
+  images?: string[];   // multiple photos — slideshow on hover
 }
 
 export const upcomingEvents: Event[] = [
   // ── ADD NEW UPCOMING EVENTS HERE (soonest first) ──────────
-
-  {
-    id: 'u-networking-apple',
-    title: 'Networking Night with an Apple Engineer',
-    date: '2026-03-26',
-    startTime: '6:00 PM',
-    endTime: '8:00 PM',
-    location: 'ENGR 376',
-    category: 'Networking',
-    description: 'Connect one-on-one with a software engineer from Apple. Great opportunity to ask about internships, full-time roles, and life at Apple.',
-    image: '/Apple Speaker Event.jpg',
-  },
 
   {
     id: 'u-hackathon-info',
@@ -78,6 +67,18 @@ export const upcomingEvents: Event[] = [
 export const pastEvents: Event[] = [
   // ── Add past events here (newest first) ──────────────────
   {
+    id: 'u-networking-apple',
+    title: 'Networking Night with an Apple Engineer',
+    date: 'Mar 26, 2026',
+    startTime: '6:00 PM',
+    endTime: '8:00 PM',
+    location: 'ENGR 376',
+    category: 'Networking',
+    description: 'Connect one-on-one with a software engineer from Apple. Great opportunity to ask about internships, full-time roles, and life at Apple.',
+    image: '/Apple Speaker Event.jpg',
+    images: ['/Apple Speaker Event.jpg', '/Apple Speaker Event 2.jpg'],
+  },
+  {
     id: 'p-tesla',
     title: 'Tesla Tech Talk',
     date: 'Mar 12, 2026',
@@ -86,7 +87,8 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Speaker',
     description: 'Industry speaker from Tesla covering cutting-edge engineering topics.',
-    image: null,
+    image: '/Tesla Networking Event.jpg',
+    images: ['/Tesla Networking Event.jpg', '/Tesla Networking Event Presentation.jpg', '/Tesla Networking Breakout Event.jpg'],
   },
   {
     id: 'p-alu',
@@ -107,6 +109,7 @@ export const pastEvents: Event[] = [
     category: 'Social',
     description: 'Welcome back event kicking off the spring semester with lab tours and project pipeline reveals.',
     image: '/Innovation Garage Event.jpg',
+    images: ['/Innovation Garage Event.jpg', '/Innovation Garage Event 2.jpg', '/Innovation Garage Event 3.jpg'],
   },
   {
     id: 'p2',
@@ -115,7 +118,8 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Workshop',
     description: 'End-to-end PCB design workflow using Altium Designer with industry professionals.',
-    image: '/Altium PCB Design Workshop.jpg',
+    image: '/Altium Design Workshop.jpg',
+    images: ['/Altium Design Workshop.jpg', '/Altium Desgin Workshop 2.jpg', '/Altium PCB Design Workshop.jpg'],
   },
   {
     id: 'p3',
@@ -125,6 +129,7 @@ export const pastEvents: Event[] = [
     category: 'Workshop',
     description: 'Hands-on microcontroller programming with engineers from Nuvoton Technology.',
     image: '/Nuvoton Workshop.jpg',
+    images: ['/Nuvoton Workshop.jpg', '/Nuvoton Workshop 2.jpg'],
   },
   {
     id: 'p4',
@@ -133,7 +138,8 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Networking',
     description: 'Exclusive networking session with Renesas recruiters and engineers.',
-    image: null,
+    image: '/Renesas Presentation.jpg',
+    images: ['/Renesas Presentation.jpg', '/Renesas Speakers.jpg', '/Renesas Selfie.jpeg'],
   },
   {
     id: 'p5',
@@ -151,7 +157,18 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Networking',
     description: 'Career insights and recruiting tips from Lockheed Martin engineers.',
-    image: null,
+    image: '/Lockheed Martin Speaker.jpg',
+    images: ['/Lockheed Martin Speaker.jpg', '/Lockheed Insight Event.jpg'],
+  },
+  {
+    id: 'p-quantum',
+    title: 'Quantum Computing Lecture',
+    date: 'Nov 2025',
+    location: 'ENGR 376',
+    category: 'Speaker',
+    description: 'An intro lecture on quantum computing concepts, industry applications, and where the field is heading.',
+    image: '/Quantum Computing Lecture.jpg',
+    images: ['/Quantum Computing Lecture.jpg', '/Quantum Computing Info Sesh.jpg'],
   },
   {
     id: 'p7',
@@ -169,7 +186,8 @@ export const pastEvents: Event[] = [
     location: 'ENGR 376',
     category: 'Industry',
     description: 'Chip design competition in collaboration with Cognichip, a Silicon Valley startup.',
-    image: null,
+    image: '/Cognichip Award Ceremony.jpg',
+    images: ['/Cognichip Award Ceremony.jpg', '/Congichip Ceremony.jpg'],
   },
 ];
 
@@ -187,6 +205,7 @@ export interface Project {
   description: string;
   date: string;
   image: string | null;
+  images?: string[];
 }
 
 export const featuredProjects: Project[] = [
@@ -196,7 +215,8 @@ export const featuredProjects: Project[] = [
     category: 'Active Project',
     description: 'A student-built wearable ECG device capable of real-time heart rate monitoring and arrhythmia detection. Designed from the ground up — analog front-end, PCB layout, and embedded firmware.',
     date: 'Spring 2026',
-    image: '/image_4.jpg',
+    image: '/ECG Workshop Soldering.jpg',
+    images: ['/ECG Workshop Soldering.jpg', '/ECG Workshop Testing.jpg', '/ECG Presentation Event.jpg', '/ECG Workshop Lecture.png'],
   },
   {
     id: 'proj-cognichip',
@@ -204,15 +224,17 @@ export const featuredProjects: Project[] = [
     category: 'Industry Challenge',
     description: 'IEEE SJSU competed in Cognichip\'s chip design challenge — a Silicon Valley startup pushing the frontier of AI hardware. Students tackled real IC design problems under industry mentorship.',
     date: 'May 2025',
-    image: '/image_5.jpg',
+    image: '/Cognichip Award Ceremony.jpg',
+    images: ['/Cognichip Award Ceremony.jpg', '/Congichip Ceremony.jpg'],
   },
   {
     id: 'proj-englehart',
-    title: 'Mike Englehart Industry Lecture',
+    title: 'QSpice Workshop with Mike Englehart',
     category: 'Speaker Event',
-    description: 'An in-depth industry lecture covering real-world electrical engineering career paths, embedded systems design, and what it takes to break into top hardware companies.',
+    description: 'Circuit simulation workshop hosted by industry engineer Mike Englehart — covering real-world EE career paths, embedded systems design, and hands-on QSpice simulation techniques.',
     date: 'Fall 2025',
-    image: '/image_3.png',
+    image: '/QSpice Intro Presentation.jpg',
+    images: ['/QSpice Intro Presentation.jpg'],
   },
 ];
 
@@ -223,6 +245,7 @@ export interface Workshop {
   description: string;
   tag: string;          // e.g. 'PCB Design', 'Verilog', 'Embedded'
   image: string | null;
+  images?: string[];
 }
 
 export const workshops: Workshop[] = [
@@ -241,7 +264,7 @@ export const workshops: Workshop[] = [
     date: 'Mar 6, 2026',
     description: 'End-to-end PCB design using Altium Designer.',
     tag: 'PCB Design',
-    image: '/Altium PCB Design Workshop.jpg',
+    image: '/Altium Design Workshop.jpg',
   },
   {
     id: 'ws-nuvoton',
@@ -250,14 +273,6 @@ export const workshops: Workshop[] = [
     description: 'Hands-on microcontroller programming with industry professionals.',
     tag: 'Microcontrollers',
     image: '/Nuvoton Workshop.jpg',
-  },
-  {
-    id: 'ws-qspice',
-    title: 'QSpice Workshop',
-    date: 'Nov 5–12, 2025',
-    description: 'Two-day circuit simulation workshop with QSpice.',
-    tag: 'Circuit Simulation',
-    image: null,
   },
   {
     id: 'ws-quantum',
@@ -310,89 +325,218 @@ export interface TeamMember {
   photo?: string | null;
 }
 
-export interface Department {
+export interface SubDepartment {
   id: string;
   name: string;
-  description: string;
-  color: string;        // tailwind bg color class e.g. 'bg-blue-600'
   lead: TeamMember;
   officers: TeamMember[];
 }
 
+export interface Department {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  accent: string;       // border/accent color (tailwind)
+  lead: TeamMember;
+  subDepartments: SubDepartment[];
+}
+
 export const executives: TeamMember[] = [
-  { name: 'Add Name', role: 'President',      linkedin: null, photo: null },
-  { name: 'Add Name', role: 'Vice President', linkedin: null, photo: null },
+  { name: 'Add Name', role: 'Chief Executive Officer',   linkedin: null, photo: null },
+  { name: 'Add Name', role: 'Chief Operations Officer',  linkedin: null, photo: null },
 ];
 
 export const departments: Department[] = [
   {
-    id: 'projects',
-    name: 'Projects',
-    description: 'Runs hardware & software projects',
-    color: 'bg-blue-600',
-    lead:     { name: 'Add Name', role: 'Chief Projects Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
-    ],
-  },
-  {
-    id: 'events',
-    name: 'Events',
-    description: 'Organizes workshops & events',
-    color: 'bg-indigo-600',
-    lead:     { name: 'Add Name', role: 'Chief Events Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+    id: 'brand',
+    name: 'Brand',
+    description: 'Creates club identity & media',
+    icon: '🎨',
+    accent: 'border-pink-500/40',
+    lead: { name: 'Add Name', role: 'Chief Brand Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'smm',
+        name: 'SMM',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [{ name: 'Add Name', role: 'Officer', linkedin: null, photo: null }],
+      },
+      {
+        id: 'content',
+        name: 'Content Creation',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
     ],
   },
   {
     id: 'outreach',
     name: 'Outreach',
     description: 'Promotes the club',
-    color: 'bg-violet-600',
-    lead:     { name: 'Add Name', role: 'Chief Outreach Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+    icon: '📣',
+    accent: 'border-orange-500/40',
+    lead: { name: 'Add Name', role: 'Chief Outreach Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'internal-outreach',
+        name: 'Internal Outreach',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [{ name: 'Add Name', role: 'Officer', linkedin: null, photo: null }],
+      },
+      {
+        id: 'biz-relations',
+        name: 'Business Relations',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'projects',
+    name: 'Projects',
+    description: 'Runs hardware & software projects',
+    icon: '📁',
+    accent: 'border-yellow-500/40',
+    lead: { name: 'Add Name', role: 'Chief Projects Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'ai-projects',
+        name: 'AI Projects',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [{ name: 'Add Name', role: 'Officer', linkedin: null, photo: null }],
+      },
+      {
+        id: 'ml-projects',
+        name: 'ML Projects',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'academic',
+    name: 'Academic',
+    description: 'Creates workshops & seminars',
+    icon: '🎓',
+    accent: 'border-purple-500/40',
+    lead: { name: 'Add Name', role: 'Chief Academic Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'ai-committee',
+        name: 'AI Committee',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+      {
+        id: 'ml-committee',
+        name: 'ML Committee',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
     ],
   },
   {
     id: 'finance',
     name: 'Finance',
     description: 'Manages funding & sponsorships',
-    color: 'bg-emerald-600',
-    lead:     { name: 'Add Name', role: 'Chief Finance Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+    icon: '💰',
+    accent: 'border-green-500/40',
+    lead: { name: 'Add Name', role: 'Chief Finance Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'internal-funding',
+        name: 'Internal Funding',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+      {
+        id: 'external-funding',
+        name: 'External Funding',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
     ],
   },
   {
     id: 'website',
     name: 'Website',
     description: 'Oversees digital presence',
-    color: 'bg-cyan-600',
-    lead:     { name: 'Add Name', role: 'Chief Website Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+    icon: '🌐',
+    accent: 'border-cyan-500/40',
+    lead: { name: 'Add Name', role: 'Chief Website Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'frontend',
+        name: 'Frontend',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+      {
+        id: 'backend',
+        name: 'Backend',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
     ],
   },
   {
-    id: 'academic',
-    name: 'Academic',
-    description: 'Coordinates study resources',
-    color: 'bg-amber-600',
-    lead:     { name: 'Add Name', role: 'Chief Academic Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
-    ],
-  },
-  {
-    id: 'brand',
-    name: 'Brand',
-    description: 'Creates club identity & media',
-    color: 'bg-rose-600',
-    lead:     { name: 'Add Name', role: 'Chief Brand Officer', linkedin: null, photo: null },
-    officers: [
-      { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+    id: 'events',
+    name: 'Events',
+    description: 'Organizes events & socials',
+    icon: '📅',
+    accent: 'border-blue-500/40',
+    lead: { name: 'Add Name', role: 'Chief Events Officer', linkedin: null, photo: null },
+    subDepartments: [
+      {
+        id: 'internal-events',
+        name: 'Internal Events',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
+      {
+        id: 'external-events',
+        name: 'External Events',
+        lead:     { name: 'Add Name', role: 'Lead', linkedin: null, photo: null },
+        officers: [
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+          { name: 'Add Name', role: 'Officer', linkedin: null, photo: null },
+        ],
+      },
     ],
   },
 ];
