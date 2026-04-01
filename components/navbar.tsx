@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
@@ -13,6 +14,7 @@ interface NavbarProps {
 export function Navbar({ primaryAction = "Join Now", transparent = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(!transparent);
+  const pathname = usePathname();
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -50,17 +52,22 @@ export function Navbar({ primaryAction = "Join Now", transparent = false }: Navb
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-base font-semibold transition-colors ${
-                  scrolled ? 'text-slate-700 hover:text-blue-600' : 'text-white/90 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-base font-semibold transition-colors ${
+                    isActive
+                      ? 'text-blue-600'
+                      : scrolled ? 'text-slate-700 hover:text-blue-600' : 'text-white/90 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
 
             <a
               href="https://discord.gg/VwPdYWSVPS"
@@ -100,18 +107,21 @@ export function Navbar({ primaryAction = "Join Now", transparent = false }: Navb
           scrolled ? 'bg-white border-slate-200' : 'bg-slate-900/95 backdrop-blur-md border-white/10'
         }`}>
           <div className="px-4 pt-2 space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`block px-4 py-3 text-sm font-semibold rounded-lg transition-colors ${
-                  scrolled ? 'text-slate-700 hover:bg-slate-50' : 'text-white hover:bg-white/10'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-4 py-3 text-sm font-semibold rounded-lg transition-colors ${
+                    isActive ? 'text-blue-600 bg-blue-50' : scrolled ? 'text-slate-700 hover:bg-slate-50' : 'text-white hover:bg-white/10'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <div className="pt-2 space-y-2">
               <a
                 href="https://discord.gg/VwPdYWSVPS"
