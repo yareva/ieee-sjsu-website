@@ -3,175 +3,183 @@
 import { useRef, useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { AnimatedSection } from '@/components/animated-section';
+import { SlideshowImage } from '@/components/slideshow-image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { featuredProjects, workshops } from '@/lib/data';
+import type { Project, Workshop } from '@/lib/data';
 
-const categoryColors: Record<string, string> = {
-  'Active Project':    'bg-blue-600 text-white',
-  'Industry Challenge':'bg-slate-800 text-white',
-  'Speaker Event':     'bg-blue-100 text-blue-700',
-  'Workshop':          'bg-slate-100 text-slate-700',
-  'Networking':        'bg-slate-100 text-slate-700',
-};
+type Tab = 'all' | 'projects' | 'workshops';
+
+type AnyItem = (Project & { _type: 'project' }) | (Workshop & { _type: 'workshop' });
+
+const taggedProjects: AnyItem[] = featuredProjects.map(p => ({ ...p, _type: 'project' as const }));
+const taggedWorkshops: AnyItem[] = workshops.map(w => ({ ...w, _type: 'workshop' as const }));
 
 export default function ProjectsPage() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canLeft,  setCanLeft]  = useState(false);
   const [canRight, setCanRight] = useState(true);
+  const [tab, setTab] = useState<Tab>('all');
+  const [scrolled, setScrolled] = useState(false);
+
+  const items = tab === 'projects' ? taggedProjects
+    : tab === 'workshops' ? taggedWorkshops
+    : [...taggedProjects, ...taggedWorkshops];
 
   const checkScroll = () => {
     const el = carouselRef.current;
     if (!el) return;
     setCanLeft(el.scrollLeft > 0);
     setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+    setScrolled(el.scrollLeft > 40);
   };
 
   const scroll = (dir: 'left' | 'right') => {
-    carouselRef.current?.scrollBy({ left: dir === 'right' ? 1020 : -1020, behavior: 'smooth' });
+    carouselRef.current?.scrollBy({ left: dir === 'right' ? 300 : -300, behavior: 'smooth' });
     setTimeout(checkScroll, 400);
   };
 
+  const switchTab = (t: Tab) => {
+    setTab(t);
+    if (carouselRef.current) carouselRef.current.scrollLeft = 0;
+    setTimeout(checkScroll, 50);
+  };
+
   return (
-    <main className="flex flex-col min-h-screen bg-white">
+    <main className="flex flex-col min-h-screen">
       <Navbar />
 
-      {/* HEADER */}
-      <section className="pt-32 pb-10 px-8 border-b border-slate-100">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">Projects & Workshops</h1>
-          <p className="text-slate-500 mt-2">Hardware builds, PCB design, digital logic, and hands-on workshops.</p>
-        </div>
-      </section>
+      {/* ── FULL-BLEED MAGAZINE SECTION ── */}
+      <section className="relative overflow-hidden" style={{ minHeight: '100dvh', height: '100dvh' }}>
+        {/* Background */}
+        <img
+          src="/ECG Workshop Soldering.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60" />
 
-      {/* FEATURED PROJECTS */}
-      <section className="bg-white">
-        {featuredProjects.length === 0 ? (
-          <div className="py-16 text-center border border-dashed border-slate-200 rounded-2xl mx-8">
-            <p className="text-slate-400">No featured projects yet. Add one in <code className="text-blue-600">lib/data.ts</code>.</p>
-          </div>
-        ) : (
-          featuredProjects.map((project, i) => (
-            <AnimatedSection key={project.id}>
-              <div className={`grid md:grid-cols-2 min-h-[520px] ${i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
-                {/* Image */}
-                <div className="relative bg-slate-900 overflow-hidden min-h-[300px]">
-                  {project.image
-                    ? <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-90" />
-                    : <div className="absolute inset-0 bg-slate-800" />
-                  }
-                  <div className="absolute inset-0 bg-black/20" />
-                </div>
-                {/* Text */}
-                <div className={`flex flex-col justify-center px-12 md:px-16 py-16 ${i % 2 === 0 ? 'bg-slate-950' : 'bg-white'}`}>
-                  <p className={`text-xs font-bold tracking-[0.3em] uppercase mb-4 ${i % 2 === 0 ? 'text-blue-400' : 'text-blue-600'}`}>
-                    {project.category}
-                  </p>
-                  <h3 className={`text-3xl md:text-4xl font-black leading-tight mb-5 tracking-tight ${i % 2 === 0 ? 'text-white' : 'text-slate-900'}`}>
-                    {project.title}
-                  </h3>
-                  <p className={`text-base leading-relaxed max-w-sm ${i % 2 === 0 ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {project.description}
-                  </p>
-                  <p className={`text-xs mt-6 font-medium tracking-widest uppercase ${i % 2 === 0 ? 'text-slate-600' : 'text-slate-400'}`}>
-                    {project.date}
-                  </p>
-                </div>
-              </div>
-            </AnimatedSection>
-          ))
-        )}
-      </section>
+        {/* Title — top left */}
+        <div className={`absolute top-32 left-8 md:left-16 z-10 max-w-xs transition-all duration-500 ${scrolled ? 'opacity-0 -translate-x-6 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
+          <p className="text-xs font-bold tracking-[0.35em] text-white/50 uppercase mb-3">IEEE SJSU</p>
+          <h1 className="text-5xl md:text-6xl font-black text-white leading-tight tracking-tight">
+            Projects &<br />Workshops
+          </h1>
+          <p className="text-white/50 text-sm mt-3 leading-relaxed">
+            Hardware builds, PCB design,<br />digital logic, and more.
+          </p>
 
-      {/* WORKSHOPS CAROUSEL */}
-      <section className="py-20 bg-slate-50">
-        <div className="px-8 md:px-16 mb-8 max-w-6xl mx-auto flex items-end justify-between">
-          <AnimatedSection>
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Past Workshops</h2>
-          </AnimatedSection>
-          <div className="flex gap-2">
-            <button onClick={() => scroll('left')} disabled={!canLeft}
-              className="p-3 bg-white border border-slate-200 rounded-full hover:border-blue-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
-              <ChevronLeft size={20} className="text-slate-700" />
-            </button>
-            <button onClick={() => scroll('right')} disabled={!canRight}
-              className="p-3 bg-white border border-slate-200 rounded-full hover:border-blue-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
-              <ChevronRight size={20} className="text-slate-700" />
-            </button>
+          {/* Filter tabs */}
+          <div className="flex gap-2 mt-5">
+            {(['all', 'projects', 'workshops'] as Tab[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => switchTab(t)}
+                className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide transition-all ${
+                  tab === t
+                    ? 'bg-white text-slate-900'
+                    : 'bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
+                }`}
+              >
+                {t === 'all' ? 'All' : t === 'projects' ? 'Projects' : 'Workshops'}
+              </button>
+            ))}
           </div>
         </div>
 
+        {/* Arrows — bottom left */}
+        <div className="absolute bottom-10 left-8 md:left-16 z-10 flex gap-2">
+          <button onClick={() => scroll('left')} disabled={!canLeft}
+            className="w-10 h-10 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 disabled:opacity-25 transition-all">
+            <ChevronLeft size={16} className="text-white" />
+          </button>
+          <button onClick={() => scroll('right')} disabled={!canRight}
+            className="w-10 h-10 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 disabled:opacity-25 transition-all">
+            <ChevronRight size={16} className="text-white" />
+          </button>
+        </div>
+
+        {/* Scrollable cards */}
         <div
           ref={carouselRef}
           onScroll={checkScroll}
-          className="flex gap-5 overflow-x-auto scroll-smooth px-8 md:px-16 pb-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="absolute inset-0 flex items-start overflow-x-auto"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            paddingLeft: '30%',
+            paddingTop: '190px',
+            paddingRight: '48px',
+            paddingBottom: '120px',
+          }}
         >
-          {workshops.map((ws) => (
-            <div key={ws.id} className="shrink-0 w-[300px] bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-300 hover:shadow-md transition-all flex flex-col">
-              <div className="h-40 bg-slate-100 flex items-center justify-center">
-                {ws.image
-                  ? <img src={ws.image} alt={ws.title} className="w-full h-full object-cover" />
-                  : <span className="text-xs text-slate-400">Workshop Image</span>
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className="shrink-0 w-[420px] mr-5 bg-[#f5f2ec] overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-300 flex flex-col rounded-sm"
+            >
+              {/* Photo */}
+              <div className="overflow-hidden relative shrink-0" style={{ height: '320px' }}>
+                {(item.images?.length ?? 0) > 0 || item.image
+                  ? <SlideshowImage
+                      slides={item.images?.length ? item.images : [item.image!]}
+                      alt={item.title}
+                    />
+                  : <div className="w-full h-full bg-slate-200 flex items-center justify-center">
+                      <span className="text-[10px] text-slate-400 uppercase tracking-widest">No Photo</span>
+                    </div>
                 }
               </div>
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-slate-400">{ws.date}</p>
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ws.tag}</span>
-                </div>
-                <h3 className="text-base font-black text-slate-900 leading-snug">{ws.title}</h3>
-                <p className="text-sm text-slate-500 mt-2 leading-relaxed">{ws.description}</p>
+              {/* Text */}
+              <div className="px-5 py-4 flex flex-col flex-1">
+                <span className="self-start text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-3">
+                  {item._type === 'project' ? item.category : item.tag}
+                </span>
+                <h3 className="text-lg font-black text-slate-900 leading-tight mb-2"
+                  style={{ fontFamily: 'var(--font-chakra-petch)' }}>
+                  {item.title}
+                </h3>
+                <p className="text-[13px] text-slate-600 leading-relaxed line-clamp-4 flex-1">
+                  {item.description}
+                </p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-3 border-t border-slate-200 pt-3">
+                  {item.date}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* LAB ACCESS */}
-      <section className="px-8 md:px-16 py-20 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <AnimatedSection>
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight text-center mb-10">Lab Access</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl border border-slate-200">
-                <h3 className="text-lg font-black text-slate-900 mb-4">Equipment</h3>
-                <ul className="space-y-2 text-sm text-slate-500">
-                  {['Oscilloscopes & Function Generators', 'PCB Design Workstations', 'Soldering & Assembly Tools', 'FPGA Development Boards', 'Multimeters & Power Supplies'].map(eq => (
-                    <li key={eq} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
-                      {eq}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="p-6 rounded-2xl border border-slate-200">
-                <h3 className="text-lg font-black text-slate-900 mb-4">Hours · ENGR 376</h3>
-                <div className="space-y-3 text-sm">
-                  {[['Monday – Friday', '7:00 AM – 10:30 PM'], ['Saturday', '8:00 AM – 7:00 PM'], ['Sunday', 'Closed']].map(([day, hrs]) => (
-                    <div key={day} className="flex justify-between">
-                      <span className="text-slate-500">{day}</span>
-                      <span className={`font-semibold ${hrs === 'Closed' ? 'text-red-500' : 'text-slate-900'}`}>{hrs}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* ── CTA ── */}
+      <section className="tech-bg py-24 px-8 pb-28 relative overflow-hidden">
+        <div className="blob animate-blob absolute top-0 right-20 w-[500px] h-[400px] bg-blue-300/25" />
+        <div className="blob animate-blob-delay absolute bottom-0 left-10 w-[400px] h-[400px] bg-indigo-200/20" />
 
-      {/* CTA */}
-      <section className="px-8 py-20 bg-slate-900 text-white text-center">
-        <AnimatedSection>
-          <h2 className="text-3xl font-black mb-4">Ready to Build Something?</h2>
-          <p className="text-slate-400 mb-8 max-w-md mx-auto">
-            Whether you're a beginner or experienced engineer, there's a place for you in IEEE SJSU.
-          </p>
-          <a href="/membership" className="inline-block px-8 py-3 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:bg-blue-700 transition-colors">
-            Get Started
-          </a>
-        </AnimatedSection>
+        <div className="max-w-5xl mx-auto relative z-10 flex flex-col md:flex-row gap-12 items-center">
+          <div className="flex-1">
+            <p className="text-xs font-bold tracking-[0.35em] text-blue-600 uppercase mb-4">IEEE SJSU</p>
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-5">
+              Build something<br />real.
+            </h2>
+            <p className="text-slate-500 text-base leading-relaxed max-w-md">
+              Join a project team, show up to a workshop, or pitch your own idea. IEEE SJSU is student-run and open to everyone at SJSU — no experience needed.
+            </p>
+          </div>
+
+          <div className="glass-card rounded-2xl p-8 md:w-80 shrink-0 flex flex-col gap-4">
+            <p className="text-slate-900 font-black text-lg leading-tight">Want in? Start on Discord.</p>
+            <p className="text-slate-500 text-sm leading-relaxed">That's where we post project openings, workshop announcements, and everything else.</p>
+            <a
+              href="https://discord.gg/VwPdYWSVPS"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 rounded-xl bg-blue-600 text-white text-sm font-bold text-center hover:bg-blue-700 transition-colors mt-2"
+            >
+              Join the Discord
+            </a>
+          </div>
+        </div>
       </section>
 
       <Footer />
