@@ -4,13 +4,13 @@ import { useState, useRef } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { SlideshowImage } from '@/components/slideshow-image';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MapPin, Clock } from 'lucide-react';
 import { upcomingEvents, pastEvents } from '@/lib/data';
-import { MapPin, Clock } from 'lucide-react';
 
 // Events page = networking / socials / speakers — workshops live in Projects
 const eventCategories = ['Speaker', 'Networking', 'Social', 'Recruiting', 'Industry', 'Hackathon'];
-const allEvents = [...upcomingEvents, ...pastEvents].filter(e => eventCategories.includes(e.category));
+const pastEventsList   = pastEvents.filter(e => eventCategories.includes(e.category));
+const upcomingEventsList = upcomingEvents.filter(e => eventCategories.includes(e.category));
 
 const categoryColors: Record<string, string> = {
   Speaker:    'bg-blue-100 text-blue-700',
@@ -21,6 +21,7 @@ const categoryColors: Record<string, string> = {
   Industry:   'bg-slate-800 text-white',
   Hackathon:  'bg-violet-100 text-violet-700',
 };
+
 
 export default function EventsPage() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,7 @@ export default function EventsPage() {
             paddingBottom: '120px',
           }}
         >
-          {allEvents.map((event) => (
+          {pastEventsList.map((event) => (
             <div
               key={event.id}
               className="shrink-0 w-[420px] mr-5 bg-[#f5f2ec] overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-300 flex flex-col rounded-sm"
@@ -130,71 +131,93 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* ── WHAT'S COMING ── */}
-      <section className="tech-bg py-24 px-8 relative overflow-hidden">
-        <div className="blob animate-blob absolute -top-20 right-10 w-[500px] h-[400px] bg-blue-300/25 opacity-70" />
-        <div className="blob animate-blob-delay absolute bottom-0 left-0 w-[400px] h-[350px] bg-indigo-200/30 opacity-60" />
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-16 items-start relative z-10">
+      {/* ── UPCOMING EVENTS ── */}
+      <section className="relative py-20 px-8 overflow-hidden bg-white">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.35em] text-blue-600 uppercase mb-3">What's Next</p>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-10">Upcoming Events</h2>
 
-          {/* Left: upcoming dates */}
-          <div className="flex-1">
-            <p className="text-xs font-bold tracking-[0.35em] text-blue-600 uppercase mb-3">On the Calendar</p>
-            <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-8">What's Coming Up</h2>
-            <div className="space-y-3">
-              {upcomingEvents.map((event) => (
-                <div key={event.id} className="flex items-start gap-4 py-4 border-b border-slate-200 last:border-0">
-                  <div className="shrink-0 w-12 text-center">
-                    <p className="text-xs font-bold text-slate-400 uppercase">
-                      {new Date(event.date).toLocaleString('en-US', { month: 'short' })}
-                    </p>
-                    <p className="text-2xl font-black text-slate-900 leading-none">
-                      {new Date(event.date).getDate()}
-                    </p>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-black text-slate-900 leading-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
-                      {event.title}
-                    </p>
-                    <p className="flex items-center gap-1 text-xs text-slate-400 mt-1">
-                      <Clock size={10} /> {event.startTime ?? 'TBD'}
-                      <span className="mx-1">·</span>
-                      <MapPin size={10} /> {event.location}
-                    </p>
-                  </div>
-                  <span className={`shrink-0 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide self-start mt-0.5 ${categoryColors[event.category] || 'bg-slate-100 text-slate-500'}`}>
+          {upcomingEventsList.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {upcomingEventsList.map((event) => (
+                <div
+                  key={event.id}
+                  className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 p-6"
+                >
+                  <span className={`inline-block text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest mb-4 ${categoryColors[event.category] || 'bg-slate-100 text-slate-500'}`}>
                     {event.category}
                   </span>
+                  <h3 className="text-slate-900 font-black text-[15px] leading-tight mb-2 tracking-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
+                    {event.title}
+                  </h3>
+                  <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-3 mb-5">
+                    {event.description}
+                  </p>
+                  <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <Clock size={10} className="text-blue-500/60" />
+                      {event.startTime ?? 'TBD'}
+                      {event.endTime && ` – ${event.endTime}`}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin size={10} className="text-blue-500/60" />
+                      {event.location}
+                    </span>
+                    <span className="ml-auto font-bold text-slate-600">
+                      {new Date(event.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Right: stay connected */}
-          <div className="md:w-72 shrink-0">
-            <div className="glass-card rounded-2xl p-7 flex flex-col gap-5">
-              <div>
-                <p className="text-xs font-bold tracking-[0.3em] text-blue-600 uppercase mb-2">Never Miss One</p>
-                <h3 className="text-xl font-black text-slate-900 leading-tight">Stay in the loop</h3>
-                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
-                  All event announcements, reminders, and recaps go out on our Discord first.
-                </p>
-              </div>
+          ) : (
+            <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xl shadow-sm p-12 text-center max-w-md mx-auto">
+              <p className="text-4xl mb-4">📅</p>
+              <h3 className="text-slate-900 font-black text-lg mb-2">Nothing just yet</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                Check back soon — or keep an eye on our Discord where announcements drop first.
+              </p>
               <a
                 href="https://discord.gg/VwPdYWSVPS"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 rounded-xl bg-blue-600 text-white text-sm font-bold text-center hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-colors"
               >
                 Join the Discord
               </a>
-              <div className="border-t border-slate-200 pt-4">
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Events are held at <span className="font-semibold text-slate-600">ENGR 376</span> unless noted otherwise. Free and open to all SJSU students.
-                </p>
-              </div>
             </div>
-          </div>
+          )}
+        </div>
+      </section>
 
+      {/* ── STAY CONNECTED ── */}
+      <section className="tech-bg py-20 px-8 relative overflow-hidden">
+        <div className="blob animate-blob absolute -top-20 right-10 w-[500px] h-[400px] bg-blue-300/25 opacity-70" />
+        <div className="blob animate-blob-delay absolute bottom-0 left-0 w-[400px] h-[350px] bg-indigo-200/30 opacity-60" />
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10 items-center relative z-10">
+          <div className="flex-1">
+            <p className="text-xs font-bold tracking-[0.35em] text-blue-600 uppercase mb-3">Never Miss One</p>
+            <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-4">Stay in the loop</h2>
+            <p className="text-slate-500 text-base leading-relaxed max-w-md">
+              All event announcements, reminders, and recaps go out on our Discord first. Free and open to all SJSU students.
+            </p>
+          </div>
+          <div className="glass-card rounded-2xl p-7 md:w-72 shrink-0 flex flex-col gap-5">
+            <div>
+              <h3 className="text-lg font-black text-slate-900 leading-tight">Join the community</h3>
+              <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                Events at <span className="font-semibold text-slate-700">ENGR 376</span> unless noted.
+              </p>
+            </div>
+            <a
+              href="https://discord.gg/VwPdYWSVPS"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 rounded-xl bg-blue-600 text-white text-sm font-bold text-center hover:bg-blue-700 transition-colors"
+            >
+              Join the Discord
+            </a>
+          </div>
         </div>
       </section>
 

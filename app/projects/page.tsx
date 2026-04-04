@@ -4,9 +4,12 @@ import { useRef, useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { SlideshowImage } from '@/components/slideshow-image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { featuredProjects, workshops } from '@/lib/data';
+import { ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-react';
+import { featuredProjects, workshops, upcomingEvents } from '@/lib/data';
 import type { Project, Workshop } from '@/lib/data';
+
+// Upcoming workshops are sourced from the shared upcoming events list
+const upcomingWorkshops = upcomingEvents.filter(e => e.category === 'Workshop');
 
 type Tab = 'all' | 'projects' | 'workshops';
 
@@ -148,6 +151,65 @@ export default function ProjectsPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── UPCOMING WORKSHOPS & PROJECTS ── */}
+      <section className="relative py-20 px-8 overflow-hidden bg-white">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.35em] text-blue-600 uppercase mb-3">What's Coming</p>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-10">Upcoming Workshops</h2>
+
+          {upcomingWorkshops.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {upcomingWorkshops.map((event) => (
+                <div
+                  key={event.id}
+                  className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 p-6"
+                >
+                  <span className="inline-block text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest mb-4 bg-blue-100 text-blue-700">
+                    {event.category}
+                  </span>
+                  <h3 className="text-slate-900 font-black text-[15px] leading-tight mb-2 tracking-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
+                    {event.title}
+                  </h3>
+                  <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-3 mb-5">
+                    {event.description}
+                  </p>
+                  <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <Clock size={10} className="text-blue-500/60" />
+                      {event.startTime ?? 'TBD'}
+                      {event.endTime && ` – ${event.endTime}`}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin size={10} className="text-blue-500/60" />
+                      {event.location}
+                    </span>
+                    <span className="ml-auto font-bold text-slate-600">
+                      {new Date(event.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xl shadow-sm p-12 text-center max-w-md mx-auto">
+              <p className="text-4xl mb-4">🔧</p>
+              <h3 className="text-slate-900 font-black text-lg mb-2">Nothing scheduled yet</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                Check back soon — or keep an eye on our Discord where workshop announcements drop first.
+              </p>
+              <a
+                href="https://discord.gg/VwPdYWSVPS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-colors"
+              >
+                Join the Discord
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
