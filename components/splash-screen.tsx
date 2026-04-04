@@ -32,8 +32,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]">
-      <p className="text-white text-2xl font-bold tracking-wide">IEEE</p>
-      <p className="text-white/70 text-sm mt-1 tracking-widest uppercase">San Jose State University Student Chapter</p>
+      <img src="/ieee-mb.png" alt="IEEE" className="w-48 brightness-0 invert" />
+      <p className="text-white/60 text-xs mt-3 tracking-[0.2em] uppercase">San Jose State Student Chapter</p>
     </div>
   );
 }
