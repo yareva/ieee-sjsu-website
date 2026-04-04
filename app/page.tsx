@@ -89,34 +89,33 @@ export default function Home() {
         </section>
 
         {/* ── MISSION ── */}
-        <section className="tech-bg relative py-24 px-8 md:px-20 overflow-hidden">
-          <div className="blob animate-blob absolute top-0 right-0 w-[500px] h-[400px] bg-blue-300/25" />
-          <div className="blob animate-blob-delay absolute bottom-0 left-10 w-[400px] h-[350px] bg-indigo-200/20" />
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <div>
-                <p className="text-xs font-bold tracking-[0.35em] text-blue-600 uppercase mb-5">Who We Are</p>
-                <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-6">
-                  Engineering<br />community<br />at SJSU.
-                </h2>
-                <p className="text-slate-500 text-base leading-relaxed max-w-md">
-                  IEEE SJSU is a student-run chapter of the world's largest technical professional organization. We run workshops, host industry speakers, and build real hardware projects — all open to every SJSU student.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { num: '100+', label: 'Active Members' },
-                  { num: '20+', label: 'Events per Year' },
-                  { num: '5+', label: 'Industry Partners' },
-                  { num: '3', label: 'Active Projects' },
-                ].map(stat => (
-                  <div key={stat.label} className="glass-card rounded-2xl p-6">
-                    <p className="text-4xl font-black text-slate-900 mb-1" style={{ fontFamily: 'var(--font-chakra-petch)' }}>{stat.num}</p>
-                    <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
+        <section className="py-20 px-8 md:px-20 bg-white border-b border-slate-100">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+            <div>
+              <p className="text-[11px] font-bold tracking-[0.35em] text-blue-600 uppercase mb-4">Who We Are</p>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-5">
+                Engineering<br />community<br />at SJSU.
+              </h2>
+              <p className="text-slate-400 text-[15px] leading-relaxed max-w-sm">
+                Student-run chapter of the world's largest technical organization. We run workshops, bring in industry speakers, and build real hardware — open to all SJSU students.
+              </p>
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { num: '100+', label: 'Active Members' },
+                { num: '20+',  label: 'Events per Year' },
+                { num: '5+',   label: 'Industry Partners' },
+                { num: '3',    label: 'Active Projects' },
+              ].map(stat => (
+                <div key={stat.label} className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
+                  <p className="text-4xl font-black text-slate-900 leading-none mb-2" style={{ fontFamily: 'var(--font-chakra-petch)' }}>{stat.num}</p>
+                  <p className="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
           </div>
         </section>
 
