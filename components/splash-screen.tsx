@@ -7,33 +7,58 @@ interface SplashScreenProps {
 }
 
 export function SplashScreen({ onComplete }: SplashScreenProps) {
-  const [visible, setVisible] = useState(true);
+  const [show,  setShow]  = useState(false);
+  const [fade,  setFade]  = useState(false);
+  const [gone,  setGone]  = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hasPlayed = sessionStorage.getItem('splash-played');
-      if (hasPlayed) {
-        setVisible(false);
-        onComplete();
-        return;
-      }
+    if (typeof window !== 'undefined' && sessionStorage.getItem('splash-played')) {
+      setGone(true); onComplete(); return;
     }
-
-    const t = setTimeout(() => {
-      setVisible(false);
-      if (typeof window !== 'undefined') sessionStorage.setItem('splash-played', 'true');
+    requestAnimationFrame(() => setShow(true));
+    const t1 = setTimeout(() => setFade(true), 2000);
+    const t2 = setTimeout(() => {
+      setGone(true);
+      sessionStorage.setItem('splash-played', 'true');
       onComplete();
-    }, 1800);
-
-    return () => clearTimeout(t);
+    }, 2800);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
-  if (!visible) return null;
+  if (gone) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]">
-      <img src="/ieee-mb.png" alt="IEEE" className="w-48 brightness-0 invert" />
-      <p className="text-white/60 text-xs mt-3 tracking-[0.2em] uppercase">San Jose State Student Chapter</p>
+    <div
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]"
+      style={{ opacity: fade ? 0 : 1, transition: 'opacity 0.8s ease' }}
+    >
+      <div style={{
+        opacity:   show ? 1 : 0,
+        transform: show ? 'translateY(0)' : 'translateY(14px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '14px',
+      }}>
+        <img
+          src="/ieee-mb.png"
+          alt="IEEE"
+          className="brightness-0 invert"
+          style={{ width: '200px', height: 'auto' }}
+          draggable={false}
+        />
+        <p style={{
+          color: 'rgba(255,255,255,0.5)',
+          fontSize: '11px',
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          fontWeight: 400,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}>
+          San José State University Student Branch
+        </p>
+      </div>
     </div>
   );
 }
