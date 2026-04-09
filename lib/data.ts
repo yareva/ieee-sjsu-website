@@ -40,27 +40,15 @@ export const upcomingEvents: Event[] = [
   // ── ADD NEW UPCOMING EVENTS HERE (soonest first) ──────────
 
   {
-    id: 'u-hackathon-info',
-    title: 'AI Hackathon — Info Session',
-    date: '2026-04-10',           // ← update to actual date
-    startTime: '6:00 PM',
-    endTime: '7:00 PM',
-    location: 'ENGR 376',
-    category: 'Workshop',
-    description: 'Everything you need to know before the AI Hackathon: team formation, judging criteria, tools, and prizes.',
-    image: null,
-  },
-
-  {
     id: 'u-hackathon',
-    title: 'IEEE SJSU AI Hackathon',
-    date: '2026-04-17',           // first day (Fri)
-    startTime: 'Fri Apr 17',
-    endTime:   'Sat Apr 18',
-    location: 'TBD',
+    title: 'Cognichip AI Hardware Hackathon',
+    date: '2026-04-17',
+    startTime: 'Apr 10 — Info Session @ 6 PM',
+    endTime:   'Apr 17–18 — Hackathon',
+    location: 'ENGR 376 / TBD',
     category: 'Hackathon',
-    description: 'Two-day AI Hackathon — build something with AI, compete for prizes, and meet engineers from industry. April 17–18.',
-    image: null,
+    description: 'Two-day AI Hardware Hackathon in partnership with Cognichip. Info session Apr 10 @ 6 PM (ENGR 376). Build something with AI, compete for prizes, and meet engineers from industry — April 17–18.',
+    image: '/Cognichip_AI_Hardware_Hackathon.png',
   },
 ];
 
