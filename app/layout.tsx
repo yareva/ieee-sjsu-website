@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Chakra_Petch } from 'next/font/google'
+import { Inter, Chakra_Petch, Bebas_Neue, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -13,6 +13,20 @@ const chakraPetch = Chakra_Petch({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
   variable: '--font-chakra-petch',
+  display: 'swap',
+});
+
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: '--font-bebas',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: '--font-space',
   display: 'swap',
 });
 
@@ -50,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${chakraPetch.variable}`}>
+    <html lang="en" className={`${inter.variable} ${chakraPetch.variable} ${bebasNeue.variable} ${spaceGrotesk.variable}`}>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
