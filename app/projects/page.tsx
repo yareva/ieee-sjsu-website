@@ -135,9 +135,6 @@ export default function ProjectsPage() {
               </div>
               {/* Text */}
               <div className="px-5 py-4 flex flex-col flex-1">
-                <span className="self-start text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-3">
-                  {item._type === 'project' ? item.category : item.tag}
-                </span>
                 <h3 className="text-lg font-black text-slate-900 leading-tight mb-2"
                   style={{ fontFamily: 'var(--font-chakra-petch)' }}>
                   {item.title}
@@ -167,9 +164,6 @@ export default function ProjectsPage() {
                   key={event.id}
                   className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 p-6"
                 >
-                  <span className="inline-block text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest mb-4 bg-blue-100 text-blue-700">
-                    {event.category}
-                  </span>
                   <h3 className="text-slate-900 font-black text-[15px] leading-tight mb-2 tracking-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
                     {event.title}
                   </h3>
