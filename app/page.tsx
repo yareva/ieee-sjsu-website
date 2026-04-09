@@ -64,20 +64,28 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Text bottom-left */}
-          <div className="absolute bottom-16 left-10 md:left-16 z-10 max-w-lg">
-            <span className="inline-block px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-white text-xs font-bold tracking-widest uppercase mb-4">
-              IEEE SJSU
-            </span>
-            <h1 className="font-bold text-white leading-none tracking-tight uppercase text-[clamp(2.5rem,5vw,4.5rem)]"
-              style={{ fontFamily: 'var(--font-chakra-petch)' }}>
-              IEEE
+          {/* Text — centered */}
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+            <h1 className="text-white leading-none"
+              style={{
+                fontFamily: 'var(--font-bebas)',
+                fontSize: 'clamp(3rem, 7vw, 6rem)',
+                letterSpacing: '0.05em',
+                textShadow: '0 2px 60px rgba(0,0,0,0.35)',
+              }}>
+              Innovation Garage
             </h1>
-            <p className="text-white/70 text-sm md:text-base font-medium tracking-[0.18em] uppercase mt-1 mb-1">
-              San José State University
+
+            <p className="text-white/50 uppercase mt-3 mb-10"
+              style={{
+                fontFamily: 'var(--font-space)',
+                fontSize: 'clamp(0.6rem, 1vw, 0.75rem)',
+                letterSpacing: '0.45em',
+              }}>
+              IEEE · San José State University · Student Chapter
             </p>
-            <p className="text-white/35 text-xs tracking-[0.3em] uppercase mb-6">Student Chapter</p>
-            <div className="flex flex-wrap gap-3">
+
+            <div className="flex flex-wrap gap-3 justify-center">
               <a href="/projects" className="px-5 py-2.5 bg-white text-slate-900 font-bold text-xs uppercase tracking-widest rounded-full hover:bg-slate-100 transition-colors">
                 Explore Projects
               </a>
@@ -89,33 +97,15 @@ export default function Home() {
         </section>
 
         {/* ── MISSION ── */}
-        <section className="py-20 px-8 md:px-20 bg-white border-b border-slate-100">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-
-            <div>
-              <p className="text-[11px] font-bold tracking-[0.35em] text-blue-600 uppercase mb-4">Who We Are</p>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-5">
-                Engineering<br />community<br />at SJSU.
-              </h2>
-              <p className="text-slate-400 text-[15px] leading-relaxed max-w-sm">
-                Student-run chapter of the world's largest technical organization. We run workshops, bring in industry speakers, and build real hardware — open to all SJSU students.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { num: '100+', label: 'Active Members' },
-                { num: '20+',  label: 'Events per Year' },
-                { num: '5+',   label: 'Industry Partners' },
-                { num: '3',    label: 'Active Projects' },
-              ].map(stat => (
-                <div key={stat.label} className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
-                  <p className="text-4xl font-black text-slate-900 leading-none mb-2" style={{ fontFamily: 'var(--font-chakra-petch)' }}>{stat.num}</p>
-                  <p className="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
+        <section className="bg-white py-24 px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase mb-6">Who We Are</p>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight mb-8">
+              Our Mission
+            </h2>
+            <p className="text-slate-500 text-lg leading-relaxed">
+              IEEE SJSU is a student-run chapter of the world's largest technical professional organization. We run hands-on workshops, host industry speakers, and build real hardware projects — all open to every SJSU student, no experience required.
+            </p>
           </div>
         </section>
 
