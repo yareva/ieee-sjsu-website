@@ -141,42 +141,77 @@ export default function EventsPage() {
               {upcomingEventsList.map((event) => (
                 <div key={event.id} className="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                   {/* Flyer */}
-                  <div className="bg-slate-950 flex items-center justify-center" style={{ aspectRatio: '3/4' }}>
+                  <div className="bg-slate-950 flex items-center justify-center">
                     {event.image ? (
                       <img
                         src={event.image}
                         alt={event.title}
-                        className="w-full h-full object-contain"
+                        className="w-full h-auto block"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4">
-                        <Calendar size={24} className="text-slate-600" />
-                        <span className="text-[9px] text-slate-500 uppercase tracking-widest text-center">Flyer Coming Soon</span>
+                      <div className="w-full flex flex-col justify-between p-5" style={{ aspectRatio: '3/4', background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 60%, #0f172a 100%)' }}>
+                        {/* Top label */}
+                        <div className="flex items-center justify-between">
+                          <span className="text-[8px] font-bold tracking-[0.3em] text-blue-400/80 uppercase">IEEE SJSU</span>
+                          <span className="text-[8px] font-bold tracking-[0.2em] text-white/30 uppercase">{event.category}</span>
+                        </div>
+
+                        {/* Title */}
+                        <div className="flex-1 flex flex-col justify-center gap-3 py-3">
+                          <h3 className="text-white font-black leading-tight" style={{ fontFamily: 'var(--font-chakra-petch)', fontSize: 'clamp(0.9rem, 2.5vw, 1.25rem)' }}>
+                            {event.title}
+                          </h3>
+                          <p className="text-white/60 leading-relaxed" style={{ fontSize: '0.6rem' }}>
+                            {event.description}
+                          </p>
+                        </div>
+
+                        {/* Bottom date/time */}
+                        <div className="border-t border-white/10 pt-3 flex flex-col gap-1">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar size={8} className="text-blue-400/60 shrink-0" />
+                            <span className="text-[8px] text-white/50 tracking-wide">
+                              {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                            </span>
+                          </div>
+                          {event.startTime && (
+                            <div className="flex items-center gap-1.5">
+                              <Clock size={8} className="text-blue-400/60 shrink-0" />
+                              <span className="text-[8px] text-white/50 tracking-wide">
+                                {event.startTime}{event.endTime ? ` – ${event.endTime}` : ''}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-1.5">
+                            <MapPin size={8} className="text-blue-400/60 shrink-0" />
+                            <span className="text-[8px] text-white/50 tracking-wide">{event.location}</span>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
                   {/* Info */}
-                  <div className="p-4 flex flex-col gap-1.5">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide ${categoryColors[event.category] || 'bg-slate-100 text-slate-500'}`}>
+                  <div className="p-6 flex flex-col gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide ${categoryColors[event.category] || 'bg-slate-100 text-slate-500'}`}>
                         {event.category}
                       </span>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wide">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">
                         Upcoming
                       </span>
                     </div>
-                    <h3 className="text-slate-900 font-black text-sm leading-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
+                    <h3 className="text-slate-900 font-black text-xl leading-tight" style={{ fontFamily: 'var(--font-chakra-petch)' }}>
                       {event.title}
                     </h3>
-                    <div className="flex flex-col gap-0.5 text-[10px] text-slate-400 mt-1">
+                    <div className="flex flex-col gap-1 text-sm text-slate-500 mt-1">
                       {event.startTime && (
-                        <span className="flex items-center gap-1">
-                          <Clock size={9} className="text-blue-400/60 shrink-0" />
+                        <span className="flex items-center gap-2">
+                          <Clock size={13} className="text-blue-400/60 shrink-0" />
                           {event.startTime}{event.endTime ? ` · ${event.endTime}` : ''}
                         </span>
                       )}
-                      <span className="flex items-center gap-1">
-                        <MapPin size={9} className="text-blue-400/60 shrink-0" />
+                      <span className="flex items-center gap-2">
+                        <MapPin size={13} className="text-blue-400/60 shrink-0" />
                         {event.location}
                       </span>
                     </div>
