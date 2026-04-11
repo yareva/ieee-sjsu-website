@@ -251,8 +251,7 @@ export default function Home() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="relative min-h-[420px] flex items-stretch">
-          <img src="/astera_lab.jpg" alt="IEEE SJSU" className="absolute inset-0 w-full h-full object-cover" />
+        <section className="relative min-h-[420px] flex items-stretch" style={{ background: '#0a0f1a' }}>
           <div className="relative z-10 grid md:grid-cols-2 w-full">
             <div />
             <div className="bg-black/40 backdrop-blur-md py-24 px-12 flex flex-col justify-center border-l border-white/20">
