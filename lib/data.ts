@@ -40,6 +40,17 @@ export const upcomingEvents: Event[] = [
   // ── ADD NEW UPCOMING EVENTS HERE (soonest first) ──────────
 
   {
+    id: 'u-garage-talk',
+    title: 'Garage Talk',
+    date: '2026-04-13',
+    startTime: '4:30 PM',
+    endTime: '6:00 PM',
+    location: 'ENGR 376',
+    category: 'Speaker',
+    description: 'Exclusive career panel with two industry engineers — Edward Lee (Co-Founder of MoveEasy, ex-Apple/Ruckus/Accenture) and Sreedhar Gudala (Hardware Engineering Manager @ NVIDIA, ex-Qualcomm/Avago). Get a behind-the-scenes look at EE career paths from big tech to startups. Bring your resume for feedback!',
+    image: '/garage talk.png',
+  },
+  {
     id: 'u-hackathon',
     title: 'Cognichip AI Hardware Hackathon',
     date: '2026-04-17',
