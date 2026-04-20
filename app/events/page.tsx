@@ -67,7 +67,7 @@ export default function EventsPage() {
         </div>
 
         {/* Arrows */}
-        <div className="absolute bottom-10 left-8 md:left-16 z-10 flex gap-2">
+        <div className="absolute bottom-44 left-1/2 -translate-x-1/2 z-10 flex gap-2">
           <button onClick={() => scroll('left')} disabled={!canLeft}
             className="w-10 h-10 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 disabled:opacity-25 transition-all">
             <ArrowLeft size={16} className="text-white" />
