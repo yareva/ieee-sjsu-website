@@ -97,7 +97,7 @@ export default function Home() {
         </section>
 
         {/* ── MISSION ── */}
-        <section className="bg-white py-24 px-8">
+        <section className="py-24 px-8" style={{ background: '#f1f5f9' }}>
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase mb-6">Who We Are</p>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight mb-8">
@@ -250,30 +250,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section className="relative min-h-[420px] flex items-stretch" style={{ background: '#0a0f1a' }}>
-          <div className="relative z-10 grid md:grid-cols-2 w-full">
-            <div />
-            <div className="bg-black/40 backdrop-blur-md py-24 px-12 flex flex-col justify-center border-l border-white/20">
-              <AnimatedSection>
-                <p className="text-xs font-bold tracking-[0.3em] text-blue-300 uppercase mb-4">Get Involved</p>
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">Join IEEE SJSU</h2>
-                <p className="text-white/70 text-base mb-8 max-w-sm leading-relaxed">
-                  Workshops, industry events, and hands-on projects — open to all SJSU students.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <a href="/membership" className="px-6 py-3 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 transition-colors">
-                    Become a Member
-                  </a>
-                  <a href="https://discord.gg/VwPdYWSVPS" target="_blank" rel="noopener noreferrer"
-                    className="px-6 py-3 bg-white/10 border border-white/30 text-white font-bold text-sm rounded-xl hover:bg-white/20 transition-colors">
-                    Join Discord
-                  </a>
-                </div>
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
 
         <Footer />
       </main>
