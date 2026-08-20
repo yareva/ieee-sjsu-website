@@ -63,7 +63,7 @@ export default function EventsPage() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      <Navbar onLight />
+      <Navbar />
 
       {/* ── FEATURED EVENTS — vertical timeline over a photo backdrop, alternating sides ── */}
       <section className="relative pt-32 pb-40 px-8 overflow-hidden">

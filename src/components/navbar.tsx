@@ -42,7 +42,7 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
         : 'bg-transparent border-b border-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16">
+        <div className="flex items-center justify-between h-16">
 
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
             <Image
@@ -56,7 +56,7 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
             />
           </Link>
 
-          <div className="hidden md:flex flex-1 items-center justify-center gap-10">
+          <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => {
               const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
               const linkColor = isActive
@@ -72,18 +72,18 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
                 </Link>
               );
             })}
-          </div>
 
-          <Link
-            href="/membership"
-            className="hidden md:inline-block shrink-0 px-4 py-2 rounded-lg font-semibold text-sm bg-blue-600 text-white hover:bg-blue-500 transition-colors"
-          >
-            {primaryAction}
-          </Link>
+            <Link
+              href="/membership"
+              className="shrink-0 px-4 py-2 rounded-lg font-semibold text-sm bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+            >
+              {primaryAction}
+            </Link>
+          </div>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden ml-auto p-2 rounded-lg transition-colors ${
+            className={`md:hidden p-2 rounded-lg transition-colors ${
               dark ? 'text-slate-700 hover:bg-slate-900/5' : 'text-white hover:bg-white/10'
             }`}
             aria-label="Toggle menu"
