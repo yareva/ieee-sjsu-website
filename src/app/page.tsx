@@ -16,14 +16,6 @@ const aboutSlides = [
   '/Nuvoton Workshop.jpg',
 ];
 
-const whatWeDo = [
-  { title: 'Speaker Sessions', body: 'Industry engineers from companies like Apple, Tesla, and Lockheed Martin come speak about their work and career paths.' },
-  { title: 'Hands-On Workshops', body: 'PCB design, embedded systems, Verilog, and more — taught by students, for students.' },
-  { title: 'Real Hardware Projects', body: 'From wearables to chip design, our project teams build things that actually work.' },
-  { title: 'Hackathons & Competitions', body: 'Our members compete — and win — at hackathons run by top companies, hosted exclusively through IEEE.' },
-  { title: 'Industry Connections', body: 'Info-sessions and recruiters give members direct access to companies hiring SJSU engineering students — and non-engineering majors too.' },
-];
-
 // One row of the "IEEE SJSU" background text. Measures the width of a single
 // repeated unit and wraps the scroll-driven offset with true modulo math, so
 // the row tiles seamlessly edge-to-edge no matter how far the page scrolls —
@@ -182,62 +174,53 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── ABOUT — sticky intro on the left, the list scrolls past on the right ── */}
+        {/* ── ABOUT — text on the left, the marquee/photo on the right ── */}
         <section className="relative py-24 px-8 bg-[#f1f5f9]">
-          <div className="max-w-6xl mx-auto relative grid md:grid-cols-[1fr_1.2fr] gap-16">
-            {/* Sticky left — pins in place while the right column scrolls */}
-            <div className="md:sticky md:top-24 md:self-start">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">
                 About Us
               </h2>
               <p className="text-slate-500 text-lg leading-relaxed mb-4">
-                IEEE SJSU is a student-run chapter of the world's largest technical professional organization — open to every SJSU engineering student, no experience required.
+                IEEE SJSU is the student-run chapter of IEEE — the world's largest technical professional organization, connecting a global network of over 400,000 members across nearly every field of engineering and technology.
               </p>
-              <p className="text-slate-500 text-lg leading-relaxed mb-8">
-                We run hands-on workshops, host industry speakers, and build real hardware projects, backed by a global network of over 400,000 members.
+              <p className="text-slate-500 text-lg leading-relaxed mb-4">
+                We run hands-on workshops covering PCB design, embedded systems, and digital logic, host speaker sessions and networking nights with companies like Apple, Tesla, and Lockheed Martin, and build real hardware projects — from wearable ECG monitors to chip design competitions.
               </p>
-
-              {/* Faint "IEEE SJSU" text confined to right behind the photo — moves
-                  only with scroll, fades out at the edges instead of a hard box */}
-              <div className="relative w-full h-[400px] sm:h-[440px] overflow-hidden">
-                <div
-                  className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none"
-                  style={{
-                    maskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%, black 40%, transparent 100%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%, black 40%, transparent 100%)',
-                  }}
-                  aria-hidden="true"
-                >
-                  {[0.22, -0.17, 0.26, -0.2].map((speed, row) => (
-                    <MarqueeRow key={row} scrollY={pageScrollY} speed={speed} />
-                  ))}
-                </div>
-
-                {/* Photo, centered — cycles every few seconds */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-[48%] max-w-[250px] aspect-[3/4] shadow-2xl">
-                    {aboutSlides.map((src, i) => (
-                      <img
-                        key={src}
-                        src={src}
-                        alt=""
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === aboutSlide ? 'opacity-100' : 'opacity-0'}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <p className="text-slate-500 text-lg leading-relaxed">
+                Membership is open to every SJSU student, not just engineering majors, and gets you access to our lab at ENGR 376, a community of 150+ active members, and direct connections to the companies hiring on campus.
+              </p>
             </div>
 
-            {/* Scrolls past the sticky panel — alternates left/right per item */}
-            <div className="flex flex-col gap-8 md:pt-2">
-              {whatWeDo.map((item, i) => (
-                <div key={item.title}
-                  className={`max-w-md bg-white rounded-2xl shadow-sm p-6 ${i % 2 === 1 ? 'md:ml-auto md:text-right' : ''}`}>
-                  <h3 className="text-xl font-black text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-500 leading-relaxed">{item.body}</p>
+            {/* Faint "IEEE SJSU" text confined behind the photo — moves only
+                with scroll, fades out at the edges instead of a hard box */}
+            <div className="relative w-full h-[400px] sm:h-[440px] overflow-hidden">
+              <div
+                className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none"
+                style={{
+                  maskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%, black 40%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%, black 40%, transparent 100%)',
+                }}
+                aria-hidden="true"
+              >
+                {[0.22, -0.17, 0.26, -0.2].map((speed, row) => (
+                  <MarqueeRow key={row} scrollY={pageScrollY} speed={speed} />
+                ))}
+              </div>
+
+              {/* Photo, centered — cycles every few seconds */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-[48%] max-w-[250px] aspect-[3/4] shadow-2xl">
+                  {aboutSlides.map((src, i) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt=""
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === aboutSlide ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
