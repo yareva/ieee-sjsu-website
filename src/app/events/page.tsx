@@ -65,21 +65,18 @@ export default function EventsPage() {
     <main className="flex flex-col min-h-screen">
       <Navbar />
 
-      {/* ── FEATURED EVENTS — vertical timeline over a photo backdrop, alternating sides ── */}
-      <section className="relative pt-32 pb-40 px-8 overflow-hidden">
-        <img src="/Innovation Garage Event 3.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-slate-950/85" />
-
+      {/* ── FEATURED EVENTS — vertical timeline, alternating sides ── */}
+      <section className="relative pt-32 pb-40 px-8 bg-slate-900 overflow-hidden">
         <div className="max-w-5xl mx-auto relative">
-          <h2 className="text-4xl font-black text-white tracking-tight mb-16">Featured Events</h2>
-          <div className="absolute left-0 top-20 bottom-2 w-px bg-white/15 hidden sm:block" />
-          <div className="space-y-12">
+          <h2 className="text-4xl font-black text-white tracking-tight mb-12">Featured Events</h2>
+          <div className="absolute left-0 top-16 bottom-2 w-px bg-white/15 hidden sm:block" />
+          <div className="space-y-6">
             {featuredProjects.map((proj, i) => (
               <AnimatedSection key={proj.id}>
                 <div
                   className={`relative sm:pl-10 flex flex-col ${i % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-6 md:gap-10`}
                 >
-                  <div className="absolute left-0 top-1.5 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-400 ring-4 ring-slate-950/85 hidden sm:block" />
+                  <div className="absolute left-0 top-1.5 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-400 ring-4 ring-slate-900 hidden sm:block" />
                   <div className="flex-1">
                     <h3 className="text-2xl font-black text-white mb-3">{proj.title}</h3>
                     <p className="text-white/60 leading-relaxed max-w-md">{proj.description}</p>
@@ -93,12 +90,12 @@ export default function EventsPage() {
           </div>
         </div>
 
-        {/* Fade into the white calendar section below */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white pointer-events-none" />
+        {/* Smooth fade into the white calendar section below, with real breathing room */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-white pointer-events-none" />
       </section>
 
       {/* ── CALENDAR ── */}
-      <section className="pb-20 px-8 bg-white">
+      <section className="pt-16 pb-20 px-8 bg-white">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-3">Our Calendar</h2>
           <p className="text-slate-500 text-base leading-relaxed mb-10 max-w-xl">

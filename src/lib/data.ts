@@ -212,7 +212,7 @@ export const featuredProjects: Project[] = [
     id: 'proj-ecg',
     title: 'ECG Wearable Monitor',
     category: 'Active Project',
-    description: 'A student-built wearable ECG device capable of real-time heart rate monitoring and arrhythmia detection. Designed from the ground up — analog front-end, PCB layout, and embedded firmware.',
+    description: 'A student-built wearable ECG device capable of real-time heart rate monitoring and arrhythmia detection. Members learned the components and practiced soldering beforehand, then put it all together — PCB assembly and embedded firmware included.',
     date: 'Spring 2026',
     image: '/ECG Workshop Soldering.jpg',
     images: ['/ECG Workshop Soldering.jpg', '/ECG Workshop Testing.jpg', '/ECG Presentation Event.jpg', '/ECG Workshop Lecture.png'],

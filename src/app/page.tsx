@@ -147,18 +147,17 @@ export default function Home() {
             <h1 className="text-white leading-none"
               style={{
                 fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(3rem, 7vw, 6rem)',
+                fontSize: 'clamp(3.25rem, 8vw, 7rem)',
                 letterSpacing: '0.05em',
                 textShadow: '0 2px 60px rgba(0,0,0,0.35)',
               }}>
               Innovation Garage
             </h1>
 
-            <p className="text-white/50 uppercase mt-3 mb-10"
+            <p className="text-white/80 font-semibold mt-3 mb-10"
               style={{
-                fontFamily: 'var(--font-space)',
-                fontSize: 'clamp(0.6rem, 1vw, 0.75rem)',
-                letterSpacing: '0.45em',
+                fontSize: 'clamp(0.95rem, 1.8vw, 1.15rem)',
+                letterSpacing: '0.04em',
               }}>
               IEEE · San José State University · Student Chapter
             </p>
