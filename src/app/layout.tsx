@@ -3,6 +3,11 @@ import { Inter, Chakra_Petch, Bebas_Neue, Space_Grotesk } from 'next/font/google
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
+// Turns on the scroll-reveal styles before first paint (no flash of content
+// that then hides itself). Falls back to showing everything if the reveal
+// script never starts.
+const SCROLL_REVEAL_BOOT = `document.documentElement.classList.add('sr-on');setTimeout(function(){if(!window.__srReady)document.documentElement.classList.remove('sr-on')},3000);`
+
 const inter = Inter({
   subsets: ["latin"],
   variable: '--font-inter',
@@ -64,7 +69,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${chakraPetch.variable} ${bebasNeue.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${chakraPetch.variable} ${bebasNeue.variable} ${spaceGrotesk.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCROLL_REVEAL_BOOT }} />
+      </head>
       <body className="font-sans antialiased">
         {children}
         <Analytics />

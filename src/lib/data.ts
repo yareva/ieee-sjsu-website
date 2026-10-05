@@ -301,13 +301,16 @@ export const workshops: Workshop[] = [
 
 
 // ─── SPONSORSHIP PACKET ───────────────────────────────────────
-// Add page images (files in /public) in order. Use null for a placeholder page.
-// e.g. ['/sponsorship/page-1.jpg', '/sponsorship/page-2.jpg', ...]
-
-export const sponsorshipPages: (string | null)[] = [
-  '/sponsorship/1.png',
-  '/sponsorship/2.png',
-  '/sponsorship/3.png',
-  '/sponsorship/4.png',
-  '/sponsorship/5.png',
-];
+// Two copies on purpose:
+//  - sponsorship-packet.pdf     the real, unmodified file — linked from
+//                                "Download Packet"
+//  - sponsorship-packet-web.pdf same pages, rebuilt from the color-corrected
+//                                page images (the source PDF's background is
+//                                a faint cream, #FFF5E9, not pure white —
+//                                this version has that neutralized so it
+//                                doesn't look tinted next to the rest of the
+//                                site). Used only for the on-page flipbook.
+// Regenerate the web copy if the packet changes — see the color-correction
+// step this project used in public/sponsorship/*.png.
+export const sponsorshipPacketUrl = '/sponsorship-packet.pdf';
+export const sponsorshipPacketWebUrl = '/sponsorship-packet-web.pdf';

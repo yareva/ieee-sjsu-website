@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 interface NavbarProps {
   primaryAction?: string;
@@ -13,7 +14,7 @@ interface NavbarProps {
   onLight?: boolean;
 }
 
-export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarProps) {
+export function Navbar({ primaryAction = "Become a Member", onLight = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -21,8 +22,9 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/events', label: 'Events & Projects' },
-    { href: '/membership', label: 'Membership' },
   ];
+  // "Membership" and "Join Us" are one button (below) that goes to /membership
+  const onMembership = pathname.startsWith('/membership');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -36,6 +38,11 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
   const dark = !scrolled && onLight;
 
   return (
+    <>
+    {/* Started from here (not the root layout) because the navbar hydrates
+        together with each page's content — starting earlier would mark
+        sections before React has hydrated them and cause a mismatch. */}
+    <ScrollReveal />
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled
         ? 'bg-slate-950/70 backdrop-blur-lg border-b border-white/10 shadow-lg shadow-black/10'
@@ -75,7 +82,9 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
 
             <Link
               href="/membership"
-              className="shrink-0 px-4 py-2 rounded-lg font-semibold text-sm bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+              className={`shrink-0 px-5 py-2 rounded-full font-semibold text-sm bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors ${
+                onMembership ? 'ring-2 ring-offset-2 ring-blue-600 ring-offset-transparent' : ''
+              }`}
             >
               {primaryAction}
             </Link>
@@ -114,7 +123,7 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
             <div className="pt-2">
               <Link
                 href="/membership"
-                className="block px-4 py-3 rounded-lg font-semibold text-sm text-center bg-blue-600 text-white"
+                className="block px-4 py-3 rounded-full font-semibold text-sm text-center bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 {primaryAction}
@@ -124,5 +133,6 @@ export function Navbar({ primaryAction = "Join Us!", onLight = false }: NavbarPr
         </div>
       )}
     </nav>
+    </>
   );
 }

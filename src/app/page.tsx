@@ -3,9 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AnimatedSection } from '@/components/animated-section';
-import { sponsorshipPages } from '@/lib/data';
-import { FlipBook } from '@/components/flip-book';
+import { sponsorshipPacketWebUrl } from '@/lib/data';
+import { DearFlipBook } from '@/components/dearflip-book';
 import { GoogleCalendar } from '@/components/google-calendar';
+import { EventHighlights } from '@/components/event-highlights';
+import { GlassBackdrop } from '@/components/glass-backdrop';
 
 const HERO_VIDEO: string | null = null;
 
@@ -20,25 +22,39 @@ const aboutSlides = [
 // repeated unit and wraps the scroll-driven offset with true modulo math, so
 // the row tiles seamlessly edge-to-edge no matter how far the page scrolls —
 // instead of the whole run eventually sliding off to one side with a gap.
-function MarqueeRow({ scrollY, speed }: { scrollY: number; speed: number }) {
+// Listens to scroll itself and moves the row directly (no React re-render),
+// so scrolling the page stays smooth.
+function MarqueeRow({ speed }: { speed: number }) {
   const unitRef = useRef<HTMLSpanElement>(null);
-  const [unitWidth, setUnitWidth] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const measure = () => setUnitWidth(unitRef.current?.offsetWidth || 0);
+    let unitWidth = 0;
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const raw = window.scrollY * speed;
+      const offset = unitWidth ? ((raw % unitWidth) + unitWidth) % unitWidth : 0;
+      if (trackRef.current) trackRef.current.style.transform = `translateX(${-offset}px)`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(apply); };
+    const measure = () => { unitWidth = unitRef.current?.offsetWidth || 0; apply(); };
     measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [speed]);
 
-  const raw = scrollY * speed;
-  const offset = unitWidth ? ((raw % unitWidth) + unitWidth) % unitWidth : 0;
   const textClass = 'text-7xl md:text-8xl font-black text-blue-950/[0.18] uppercase shrink-0';
   const textStyle = { fontFamily: 'var(--font-bebas)', letterSpacing: '-0.02em' } as const;
 
   return (
     <div className="overflow-hidden whitespace-nowrap leading-[0.9]">
-      <div className="inline-flex" style={{ transform: `translateX(${-offset}px)` }}>
+      <div ref={trackRef} className="inline-flex will-change-transform">
         <span ref={unitRef} className={textClass} style={textStyle}>IEEE&nbsp;SJSU&nbsp;IEEE&nbsp;SJSU&nbsp;</span>
         <span className={textClass} style={textStyle}>IEEE&nbsp;SJSU&nbsp;IEEE&nbsp;SJSU&nbsp;</span>
         <span className={textClass} style={textStyle}>IEEE&nbsp;SJSU&nbsp;IEEE&nbsp;SJSU&nbsp;</span>
@@ -51,8 +67,7 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [aboutSlide, setAboutSlide] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
-  const [heroScroll, setHeroScroll] = useState(0); // 0–1 progress through the hero's own height
-  const [pageScrollY, setPageScrollY] = useState(0); // raw scroll position — drives the About text, no autoplay
+  const heroBgRef = useRef<HTMLDivElement>(null);
 
   const slides = [
     '/Apple Speaker Event 2.jpg',
@@ -74,55 +89,38 @@ export default function Home() {
   }, []);
 
   // Zoom + blur the hero background as you scroll past it — degree of the
-  // effect is driven directly by scroll position, not time.
+  // effect is driven directly by scroll position, not time. Styles are set
+  // directly on the element (no React re-render of the page every frame),
+  // and nothing is touched once the hero has scrolled out of view.
   useEffect(() => {
     let raf = 0;
-    const handleScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const h = heroRef.current?.offsetHeight || 1;
-        setHeroScroll(Math.min(1, Math.max(0, window.scrollY / h)));
-      });
+    let last = -1;
+    const apply = () => {
+      raf = 0;
+      const h = heroRef.current?.offsetHeight || 1;
+      const p = Math.min(1, Math.max(0, window.scrollY / h));
+      const el = heroBgRef.current;
+      if (!el || p === last) return;
+      last = p;
+      el.style.transform = `scale(${1 + p * 0.25})`;
+      el.style.filter = p > 0 ? `blur(${p * 12}px)` : '';
     };
+    const handleScroll = () => { if (!raf) raf = requestAnimationFrame(apply); };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    apply();
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
-  useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        setPageScrollY(window.scrollY);
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <main className="flex flex-col min-h-screen bg-white">
+    <main className="flex flex-col min-h-screen">
       <Navbar />
 
         {/* ── HERO ── */}
-        <section ref={heroRef} className="relative overflow-hidden" style={{ height: '100dvh', minHeight: '600px' }}>
-          <div
-            className="absolute inset-0"
-            style={{
-              transform: `scale(${1 + heroScroll * 0.25})`,
-              filter: `blur(${heroScroll * 12}px)`,
-            }}
-          >
+        <section ref={heroRef} data-no-reveal className="relative overflow-hidden" style={{ height: '100dvh', minHeight: '600px' }}>
+          <div ref={heroBgRef} className="absolute inset-0 will-change-transform">
             {HERO_VIDEO ? (
               <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay muted loop playsInline />
             ) : (
@@ -174,10 +172,10 @@ export default function Home() {
         </section>
 
         {/* ── ABOUT — text on the left, the marquee/photo on the right ── */}
-        <section className="relative py-24 px-8 bg-[#f1f5f9]">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <section className="relative py-24 px-8 bg-white overflow-hidden">
+          <div className="relative z-10 w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">
+              <h2 className="text-4xl md:text-5xl font-black text-[#294867] tracking-tight mb-6">
                 About Us
               </h2>
               <p className="text-slate-500 text-lg leading-relaxed mb-4">
@@ -203,7 +201,7 @@ export default function Home() {
                 aria-hidden="true"
               >
                 {[0.22, -0.17, 0.26, -0.2].map((speed, row) => (
-                  <MarqueeRow key={row} scrollY={pageScrollY} speed={speed} />
+                  <MarqueeRow key={row} speed={speed} />
                 ))}
               </div>
 
@@ -225,7 +223,7 @@ export default function Home() {
         </section>
 
         {/* ── TWO-PANEL ── */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-[3px] bg-slate-950">
+        <section data-reveal-group className="grid grid-cols-1 md:grid-cols-2 gap-[3px] bg-slate-950">
           {[
             { img: '/Altium PCB Design Workshop.jpg', label: 'Explore our', title: 'EVENTS',     href: '/events',     cta: 'See Everything' },
             { img: '/Innovation Garage Event.jpg',    label: 'Become a',    title: 'MEMBER',     href: '/membership', cta: 'Join Us!'       },
@@ -245,10 +243,14 @@ export default function Home() {
           ))}
         </section>
 
+        {/* ── RECENT HIGHLIGHTS ── */}
+        <EventHighlights />
+
         {/* ── CALENDAR ── */}
-        <section className="py-20 px-8 bg-[#f1f5f9]">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-10">
+        <section className="relative py-20 px-6 sm:px-8 bg-[#eef0f3] overflow-hidden">
+          <GlassBackdrop />
+          <div className="glass-light relative z-10 w-full max-w-5xl mx-auto rounded-3xl p-5 sm:p-8 md:p-10">
+            <h2 className="text-4xl md:text-5xl font-black text-[#294867] tracking-tight mb-10">
               Our Calendar
             </h2>
             <GoogleCalendar />
@@ -256,19 +258,19 @@ export default function Home() {
         </section>
 
         {/* ── SPONSORSHIP ── */}
-        <section className="tech-bg relative py-24 px-8 md:px-20 overflow-hidden">
-          <div className="max-w-6xl mx-auto relative z-10 grid md:grid-cols-[1fr_1.1fr] gap-16 items-center">
+        <section className="relative py-24 px-8 md:px-20 bg-white overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto relative z-10 grid md:grid-cols-[0.85fr_1.35fr] gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-none mb-6 uppercase"
+              <h2 className="text-4xl md:text-6xl font-black text-[#294867] leading-none mb-6 uppercase"
                 style={{ fontFamily: 'var(--font-bebas)', letterSpacing: '0.02em' }}>
-                Sponsor IEEE SJSU
+                Become a Sponsor
               </h2>
               <p className="text-slate-500 text-lg leading-relaxed mb-10 max-w-md">
                 Sponsoring us puts your company directly in front of SJSU's engineering students — see the packet for tiers and details.
               </p>
 
-              {/* Stats, straight from the sponsorship packet */}
-              <div className="flex flex-wrap gap-x-10 gap-y-6 mb-10">
+              {/* Stats from the sponsorship packet */}
+              <div data-reveal-group className="flex flex-wrap gap-x-10 gap-y-6 mb-10">
                 {[
                   ['150+', 'Active Members'],
                   ['350+', 'Discord'],
@@ -276,7 +278,7 @@ export default function Home() {
                   ['250+', 'LinkedIn'],
                 ].map(([n, l]) => (
                   <div key={l}>
-                    <p className="text-3xl font-black text-slate-900">{n}</p>
+                    <p className="text-3xl font-black text-[#294867]">{n}</p>
                     <p className="text-xs text-slate-400 uppercase tracking-wide">{l}</p>
                   </div>
                 ))}
@@ -284,7 +286,7 @@ export default function Home() {
 
               <div className="flex flex-wrap gap-3">
                 <a href="mailto:ieee@sjsu.edu"
-                  className="px-6 py-3 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 transition-colors">
+                  className="px-6 py-3 bg-[#294867] text-white font-bold text-sm rounded-xl hover:bg-[#1d3650] transition-colors">
                   Get in Touch
                 </a>
                 <a href="/sponsorship-packet.pdf" target="_blank" rel="noopener noreferrer"
@@ -295,7 +297,7 @@ export default function Home() {
             </div>
 
             <AnimatedSection>
-              <FlipBook pages={sponsorshipPages} />
+              <DearFlipBook source={sponsorshipPacketWebUrl} />
             </AnimatedSection>
           </div>
         </section>

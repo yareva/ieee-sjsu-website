@@ -1,39 +1,14 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-
 interface AnimatedSectionProps {
   children: React.ReactNode;
   className?: string;
 }
 
+// Slides its content in when scrolled into view. The animation itself comes
+// from the site-wide scroll reveal (components/scroll-reveal.tsx), so every
+// page uses the same timing and motion.
 export function AnimatedSection({ children, className = '' }: AnimatedSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      className={`${isVisible ? 'animate-fade-in-up' : 'opacity-0'} ${className}`}
-    >
+    <div data-reveal className={className}>
       {children}
     </div>
   );

@@ -49,7 +49,7 @@ export default function MembershipPage() {
       <Navbar />
 
       {/* Header */}
-      <section className="relative px-4 pt-32 pb-16 text-white overflow-hidden">
+      <section data-no-reveal className="relative px-4 pt-32 pb-16 text-white overflow-hidden">
         <img src="/Innovation Garage Event.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-slate-950/80" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -65,12 +65,12 @@ export default function MembershipPage() {
       </section>
 
       {/* Sign Up */}
-      <section className="px-4 py-16 md:py-20 bg-white">
+      <section className="px-4 py-16 md:py-20 bg-[#f4f4f2]">
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
-            <div className="rounded-2xl bg-blue-50 border border-blue-100 px-8 py-12 md:px-14 md:py-14 text-center">
-              <p className="text-xs font-bold tracking-[0.3em] text-slate-900 uppercase mb-4">How to Join</p>
-              <h2 className="text-2xl md:text-4xl font-heading font-black text-slate-900 mb-4">
+            <div className="rounded-2xl bg-white border border-[#d8d9d6] px-8 py-12 md:px-14 md:py-14 text-center">
+              <p className="text-xs font-bold tracking-[0.3em] text-[#58708a] uppercase mb-4">How to Join</p>
+              <h2 className="text-2xl md:text-4xl font-heading font-black text-[#294867] mb-4">
                 Become an Official Member
               </h2>
               <p className="text-slate-600 max-w-xl mx-auto mb-8">
