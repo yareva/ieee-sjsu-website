@@ -7,6 +7,8 @@ import { GoogleCalendar } from '@/components/google-calendar';
 import { CoverFlow, type CoverFlowItem } from '@/components/cover-flow';
 import { FlipCard, FlipDetails } from '@/components/flip-card';
 import { GlassBackdrop } from '@/components/glass-backdrop';
+import { GarageTour } from '@/components/garage/garage-tour';
+import type { Slide } from '@/components/garage/screens';
 import { pastEvents, featuredProjects, workshops } from '@/lib/data';
 
 type Bucket = 'All' | 'Events' | 'Projects' | 'Workshops';
@@ -47,6 +49,9 @@ const featuredItems: CoverFlowItem[] = (() => {
   }
   return items;
 })();
+
+// What the projector shows in the 3D intro: the same featured items
+const projectorSlides: Slide[] = featuredItems.map((i) => ({ image: i.image, title: i.title, date: i.date, label: i.label }));
 
 const TABS: Bucket[] = ['All', 'Events', 'Projects', 'Workshops'];
 
@@ -115,7 +120,11 @@ export default function EventsPage() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      <Navbar onLight />
+      <Navbar themed />
+
+      {/* ── 3D INTRO — under the lab's projector as it shows the featured
+          events, then into the screen; fades into the cover-flow below ── */}
+      <GarageTour tour="events" slides={projectorSlides} fadeTo="#f4f4f2" />
 
       {/* ── FEATURED EVENTS — scroll-driven cover-flow ── */}
       <CoverFlow items={featuredItems} title="Featured Events" />

@@ -2,6 +2,8 @@
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+/* Light theme on pages with the theme switch (see components/theme-toggle.tsx) */
+@custom-variant theme-light (&:where([data-theme=light], [data-theme=light] *));
 
 :root {
   --background: 250 251 252;
@@ -593,3 +595,17 @@
     box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.5);
   }
 }
+
+
+/* ── Theme switch (components/theme-toggle.tsx) ──
+   The new theme wipes in as a growing circle; turn off the default
+   cross-fade so only the clip-path animation shows. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* show the theme you'd switch TO: sun while dark, moon while light */
+.theme-icon-moon { display: none; }
+[data-theme='light'] .theme-icon-moon { display: block; }
+[data-theme='light'] .theme-icon-sun { display: none; }

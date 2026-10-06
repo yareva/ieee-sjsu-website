@@ -14,7 +14,7 @@ export interface CoverFlowItem {
   image: string;
 }
 
-// Cover-flow carousel — a regular section on the site's off-white background. When the page opens it sweeps through every event (last to
+// Cover-flow carousel — a regular section on the site's off-white background. When it first scrolls into view it sweeps through every event (last to
 // first) and settles on the first one; any interaction stops the sweep. Move through it with the arrows, the scrubber, clicking a side
 // cover, swiping/dragging, a sideways trackpad swipe, or arrow keys.
 //
@@ -39,6 +39,7 @@ export function CoverFlow({ items, title }: { items: CoverFlowItem[]; title: str
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const drag = useRef<{ x: number; moved: boolean } | null>(null);
   const wheelLock = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Glide the drawn position toward the active card. The animation loop only
   // runs while the cards are actually moving, then stops.
@@ -78,19 +79,27 @@ export function CoverFlow({ items, title }: { items: CoverFlowItem[]; title: str
     introTimers.current.forEach((t) => window.clearTimeout(t));
     introTimers.current = [];
   }, []);
+  // Waits until the section is actually on screen (the events page opens
+  // on a 3D intro above it).
   useEffect(() => {
-    if (n < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = sectionRef.current;
+    if (n < 2 || !el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     current.current = n - 1;
     activeRef.current = n - 1;
     setPos(n - 1);
     setActive(n - 1);
-    let t = 650; // let the section slide in first
-    for (let k = n - 2, step = 0; k >= 0; k--, step++) {
-      t += 90 + step * 14;
-      const idx = k;
-      introTimers.current.push(window.setTimeout(() => go(idx), t));
-    }
-    return stopIntro;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      let t = 450; // let the section settle in first
+      for (let k = n - 2, step = 0; k >= 0; k--, step++) {
+        t += 90 + step * 14;
+        const idx = k;
+        introTimers.current.push(window.setTimeout(() => go(idx), t));
+      }
+    }, { threshold: 0.45 });
+    io.observe(el);
+    return () => { io.disconnect(); stopIntro(); };
   }, [n, go, stopIntro]);
 
   const goAndReset = (i: number) => {
@@ -181,7 +190,7 @@ export function CoverFlow({ items, title }: { items: CoverFlowItem[]; title: str
   const front = items[active];
 
   return (
-    <section className="relative bg-[#f4f4f2] pt-28 md:pt-32 pb-16 md:pb-20 [overflow-x:clip]">
+    <section ref={sectionRef} className="relative bg-[#f4f4f2] pt-28 md:pt-32 pb-16 md:pb-20 [overflow-x:clip]">
 
       <h2
         className="text-center font-bold text-[#294867] leading-none px-6"

@@ -1,217 +1,185 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AnimatedSection } from '@/components/animated-section';
-import { Check, ExternalLink, Coffee } from 'lucide-react';
+import { Check, ExternalLink, Coffee, MapPin, Mail, MessageCircle } from 'lucide-react';
+import { clubStats } from '@/lib/data';
+import '../home.css';
 
 const SIGNUP_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScWnWYaIF0Hpwuz_6_ZdB69o8bjAmCd9Y_l5xrclvjXCpgm8g/viewform';
+const DISCORD_URL = 'https://discord.gg/VwPdYWSVPS';
 
+const tiers = [
+  {
+    name: 'Paid Membership',
+    price: '$20',
+    per: 'per semester · or $30 per year',
+    benefits: ['Priority access to all workshops/events', 'Exclusive resources and discounts'],
+    featured: true,
+  },
+  {
+    name: 'General Membership',
+    price: '$5',
+    per: 'per workshop',
+    benefits: ['Pay-as-you-go', 'Subject to availability'],
+    featured: false,
+  },
+];
+
+const benefits = [
+  'Full access to events, workshops, tech talks, and live demos',
+  'Lunch & learns, hackathons, and networking events with industry partners',
+  'Opportunities to work on capstone and technical projects',
+  'Lab access at ENGR 376',
+  'Snack Bar access at ENGR 376',
+  'Professional development resources',
+];
+
+const majors = [
+  { name: 'Electrical Eng.', count: 108 },
+  { name: 'Comp. Eng.',      count: 17 },
+  { name: 'Comp. Sci.',      count: 8 },
+  { name: 'Data Analysis',   count: 6 },
+  { name: 'Software Eng.',   count: 5 },
+];
+const maxMajor = Math.max(...majors.map((m) => m.count));
+
+const classStanding = [
+  { label: 'Graduate (M.S.)', count: 52 },
+  { label: '4th Year (B.S.)', count: 45 },
+  { label: '3rd Year (B.S.)', count: 30 },
+  { label: '2nd Year (B.S.)', count: 14 },
+];
+const maxStanding = Math.max(...classStanding.map((c) => c.count));
+
+const hours = [
+  ['Monday – Friday', '7:00 AM – 10:30 PM'],
+  ['Saturday', '8:00 AM – 7:00 PM'],
+  ['Sunday', 'Closed'],
+];
+
+// Membership: one straightforward page with everything you need to join.
+// Follows the light/dark switch, using the home page's color tokens.
 export default function MembershipPage() {
-  const tiers = [
-    {
-      name: 'Paid Membership',
-      price: '$20/Semester or $30/Year',
-      benefits: ['Priority access to all workshops/events', 'Exclusive resources and discounts'],
-    },
-    {
-      name: 'General Membership',
-      price: '$5 per workshop',
-      benefits: ['Pay-as-you-go', 'Subject to availability'],
-    },
-  ];
-
-  const benefits = [
-    'Full access to events, workshops, tech talks, and live demos',
-    'Lunch & learns, hackathons, and networking events with industry partners',
-    'Opportunities to work on capstone and technical projects',
-    'Lab access at ENGR 376',
-    'Snack Bar access at ENGR 376',
-    'Professional development resources',
-  ];
-
-  const majors = [
-    { name: 'Electrical Eng.', count: 108 },
-    { name: 'Comp. Eng.',      count: 17 },
-    { name: 'Comp. Sci.',      count: 8 },
-    { name: 'Data Analysis',   count: 6 },
-    { name: 'Software Eng.',   count: 5 },
-  ];
-  const maxMajor = Math.max(...majors.map(m => m.count));
-
-  const classStanding = [
-    { label: 'Graduate (M.S.)', count: 52 },
-    { label: '4th Year (B.S.)', count: 45 },
-    { label: '3rd Year (B.S.)', count: 30 },
-    { label: '2nd Year (B.S.)', count: 14 },
-  ];
+  const members = clubStats.find((s) => s.label === 'Active Members');
 
   return (
-    <main className="flex flex-col min-h-screen bg-white">
-      <Navbar />
+    <main className="home flex flex-col min-h-screen">
+      <Navbar themeToggle />
 
-      {/* Header */}
-      <section data-no-reveal className="relative px-4 pt-32 pb-16 text-white overflow-hidden">
-        <img src="/Innovation Garage Event.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-slate-950/80" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <AnimatedSection>
-            <h1 className="text-4xl md:text-5xl font-heading font-black mb-4 tracking-tight">
-              Membership
-            </h1>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-              Join IEEE SJSU and unlock access to exclusive technical projects, workshops, and networking events.
-            </p>
+      {/* ── HEADER + HOW TO JOIN ── */}
+      <section data-no-reveal className="m-hero">
+        <div className="home-container">
+          <p className="home-kicker">Membership</p>
+          <h1 className="m-title">Join the <span className="home-h2-outline">Garage</span></h1>
+          <p className="home-lede m-lede">
+            Join IEEE SJSU and unlock access to exclusive technical projects, workshops, and networking events.
+            To become an official member, fill out the sign-up form.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a href={SIGNUP_FORM_URL} target="_blank" rel="noopener noreferrer" className="home-btn home-btn-primary">
+              Sign Up Now <ExternalLink size={15} />
+            </a>
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="home-btn home-btn-ghost">
+              Join the Discord
+            </a>
+          </div>
+
+          <div className="m-facts">
+            <div><MapPin size={16} /> ENGR 376</div>
+            <div><Check size={16} /> Open to every SJSU student</div>
+            {members && <div><Check size={16} /> {members.value}{members.suffix} members</div>}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TIERS ── */}
+      <section className="home-section m-section">
+        <div className="home-container">
+          <p className="home-kicker">Pricing</p>
+          <h2 className="home-h2">Membership <span className="home-h2-outline">Tiers</span></h2>
+          <div data-reveal-group className="m-grid-2">
+            {tiers.map((tier) => (
+              <div key={tier.name} className={`m-card m-tier ${tier.featured ? 'is-featured' : ''}`}>
+                <p className="m-card-label">{tier.name}</p>
+                <p className="m-price">{tier.price}<span>{tier.per}</span></p>
+                <ul className="m-list">
+                  {tier.benefits.map((b) => (
+                    <li key={b}><Check size={16} /> {b}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BENEFITS ── */}
+      <section className="home-section m-section">
+        <div className="home-container">
+          <p className="home-kicker">What you get</p>
+          <h2 className="home-h2">Membership <span className="home-h2-outline">Benefits</span></h2>
+          <ul data-reveal-group className="m-benefits">
+            {benefits.map((b) => (
+              <li key={b} className="m-card">
+                {b.includes('Snack Bar') ? <Coffee size={20} /> : <Check size={20} />}
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── OUR CHAPTER ── */}
+      <section className="home-section m-section">
+        <div className="home-container">
+          <p className="home-kicker">Our chapter</p>
+          <h2 className="home-h2">{members ? `${members.value}${members.suffix}` : '150+'} Members <span className="home-h2-outline">and Growing</span></h2>
+          <AnimatedSection className="m-grid-2">
+            <div className="m-card">
+              <p className="m-card-label">Major Distribution</p>
+              <div className="m-bars">
+                {majors.map((m) => (
+                  <div key={m.name} className="m-bar">
+                    <span>{m.name}</span>
+                    <div><i style={{ width: `${(m.count / maxMajor) * 100}%` }} /></div>
+                    <b>{m.count}</b>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="m-card">
+              <p className="m-card-label">Class Standing</p>
+              <div className="m-bars">
+                {classStanding.map((c) => (
+                  <div key={c.label} className="m-bar">
+                    <span>{c.label}</span>
+                    <div><i style={{ width: `${(c.count / maxStanding) * 100}%` }} /></div>
+                    <b>{c.count}</b>
+                  </div>
+                ))}
+              </div>
+            </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Sign Up */}
-      <section className="px-4 py-16 md:py-20 bg-[#f4f4f2]">
-        <div className="max-w-5xl mx-auto">
-          <AnimatedSection>
-            <div className="rounded-2xl bg-white border border-[#d8d9d6] px-8 py-12 md:px-14 md:py-14 text-center">
-              <p className="text-xs font-bold tracking-[0.3em] text-[#58708a] uppercase mb-4">How to Join</p>
-              <h2 className="text-2xl md:text-4xl font-heading font-black text-[#294867] mb-4">
-                Become an Official Member
-              </h2>
-              <p className="text-slate-600 max-w-xl mx-auto mb-8">
-                To become an official member of IEEE, please fill out this form.
-              </p>
-              <a
-                href={SIGNUP_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
-              >
-                Sign Up Now <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
-          </AnimatedSection>
-
-          {/* Tiers (reference only — pricing info) */}
-          <AnimatedSection className="mt-10">
-            <p className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4">Membership Tiers</p>
-            <div className="grid md:grid-cols-2 gap-6">
-              {tiers.map((tier, i) => (
-                <div
-                  key={i}
-                  className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-blue-600/30 hover:shadow-sm transition-all"
-                >
-                  <h3 className="font-heading font-bold text-slate-900 mb-2">{tier.name}</h3>
-                  <p className="text-blue-600 font-bold text-lg mb-4">{tier.price}</p>
-                  <ul className="space-y-2">
-                    {tier.benefits.map((benefit, j) => (
-                      <li key={j} className="flex items-start gap-2 text-sm text-slate-500">
-                        <Check className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+      {/* ── LAB HOURS + QUESTIONS ── */}
+      <section className="home-section m-section">
+        <div className="home-container m-grid-2">
+          <AnimatedSection className="m-card">
+            <p className="m-card-label">Lab Access Hours</p>
+            <p className="m-muted m-loc"><MapPin size={16} /> ENGR 376</p>
+            <dl className="m-hours">
+              {hours.map(([d, h]) => (
+                <div key={d}><dt>{d}</dt><dd>{h}</dd></div>
               ))}
-            </div>
+            </dl>
           </AnimatedSection>
-
-          {/* Our Chapter */}
-          <AnimatedSection className="mt-8 p-8 rounded-2xl border border-slate-200 bg-white">
-            <p className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">Our Chapter</p>
-            <h3 className="text-2xl font-heading font-black text-slate-900 mb-8">150+ Members and Growing</h3>
-            <div className="grid md:grid-cols-2 gap-10">
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4">Major Distribution</p>
-                <div className="space-y-3">
-                  {majors.map((m) => (
-                    <div key={m.name} className="flex items-center gap-3">
-                      <span className="w-28 shrink-0 text-sm text-slate-500">{m.name}</span>
-                      <div className="flex-1 h-2.5 rounded-full bg-blue-50 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-blue-600"
-                          style={{ width: `${(m.count / maxMajor) * 100}%` }}
-                        />
-                      </div>
-                      <span className="w-8 shrink-0 text-sm font-bold text-slate-900 text-right">{m.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4">Class Standing</p>
-                <div className="space-y-3">
-                  {classStanding.map((c) => (
-                    <div key={c.label} className="flex items-center justify-between text-sm">
-                      <span className="text-slate-500">{c.label}</span>
-                      <span className="font-bold text-slate-900">{c.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Benefits + Lab Access, side by side */}
-          <div className="grid md:grid-cols-2 gap-6 mt-8">
-            <AnimatedSection className="p-8 rounded-2xl border border-slate-200 bg-white h-full">
-              <h3 className="text-xl font-heading font-bold text-slate-900 mb-4">Membership Benefits</h3>
-              <ul className="space-y-3">
-                {benefits.map((benefit, i) => (
-                  <li key={i} className="flex items-center gap-3 text-slate-900">
-                    {benefit.includes('Snack Bar') ? (
-                      <Coffee className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                    ) : (
-                      <Check className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                    )}
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </AnimatedSection>
-
-            <AnimatedSection className="p-8 rounded-2xl border border-slate-200 bg-white h-full">
-              <h3 className="text-xl font-heading font-bold text-slate-900 mb-4">Lab Access Hours</h3>
-              <p className="text-slate-500 mb-4">Location: ENGR 376</p>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between max-w-xs">
-                  <span className="text-slate-500">Monday - Friday:</span>
-                  <span className="font-medium text-slate-900">7:00 AM - 10:30 PM</span>
-                </div>
-                <div className="flex justify-between max-w-xs">
-                  <span className="text-slate-500">Saturday:</span>
-                  <span className="font-medium text-slate-900">8:00 AM - 7:00 PM</span>
-                </div>
-                <div className="flex justify-between max-w-xs">
-                  <span className="text-slate-500">Sunday:</span>
-                  <span className="font-medium text-slate-900">Closed</span>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-
-          {/* FAQ */}
-          <AnimatedSection className="mt-8 p-8 rounded-2xl border border-slate-200 bg-white">
-            <h3 className="text-xl font-heading font-bold text-slate-900 mb-6">Questions?</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Contact Us</h4>
-                <p className="text-slate-500">
-                  Email:{' '}
-                  <a href="mailto:ieee@sjsu.edu" className="text-blue-600 hover:underline">
-                    ieee@sjsu.edu
-                  </a>
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Join Our Community</h4>
-                <p className="text-slate-500">
-                  Connect on{' '}
-                  <a
-                    href="https://discord.gg/VwPdYWSVPS"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Discord
-                  </a>
-                </p>
-              </div>
+          <AnimatedSection className="m-card">
+            <p className="m-card-label">Questions?</p>
+            <div className="m-contact">
+              <a href="mailto:ieee@sjsu.edu"><Mail size={18} /> <span><b>Email us</b>ieee@sjsu.edu</span></a>
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} /> <span><b>Join our community</b>Connect on Discord</span></a>
             </div>
           </AnimatedSection>
         </div>

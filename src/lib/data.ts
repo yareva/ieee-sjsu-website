@@ -314,3 +314,52 @@ export const workshops: Workshop[] = [
 // step this project used in public/sponsorship/*.png.
 export const sponsorshipPacketUrl = '/sponsorship-packet.pdf';
 export const sponsorshipPacketWebUrl = '/sponsorship-packet-web.pdf';
+
+
+// ─── CLUB STATS ───────────────────────────────────────────────
+// Shown in the home page's sponsor section (and the hero). Members,
+// Instagram and LinkedIn come from the sponsorship packet — update them here
+// whenever the packet is refreshed.
+export const clubStats = [
+  { value: 150, suffix: '+', label: 'Active Members' },
+  { value: 500, suffix: '+', label: 'Discord' },
+  { value: 850, suffix: '+', label: 'Instagram' },
+  { value: 250, suffix: '+', label: 'LinkedIn' },
+];
+
+
+// ─── HOME PAGE: THE 3D LAB TOUR ───────────────────────────────
+// The home page opens on the terminal ("Welcome to Innovation Garage"),
+// then each entry below is one stop as you scroll through the lab:
+//   1. the room   2. the oscilloscope   3. the multimeter
+// `prompt` is the fake DOS command shown above the title.
+
+export interface HomeStop {
+  prompt: string;
+  title: string;
+  body: string;
+  points?: string[];
+}
+
+export const homeStops: HomeStop[] = [
+  {
+    prompt: 'C:\> TYPE ABOUT.TXT',
+    title: 'About Us',
+    body: "IEEE SJSU is San José State's student branch of IEEE, the world's largest technical professional organization. Our home base is the Innovation Garage, our lab in ENGR 376, where members build, test and learn together.",
+  },
+  {
+    prompt: 'C:\> RUN WORKSHOPS.EXE',
+    title: 'What We Do',
+    body: 'Everything is hands-on:',
+    points: [
+      'Workshops: PCB design, embedded C, Verilog and FPGAs',
+      'Speaker and networking nights with engineers from Apple, Tesla, Lockheed Martin, Renesas and more',
+      'Real hardware projects, from a wearable ECG monitor to chip-design competitions',
+    ],
+  },
+  {
+    prompt: 'C:\> JOIN.BAT',
+    title: 'Join the Garage',
+    body: "Membership is open to every SJSU student, not just engineering majors. Come to an event, stop by ENGR 376, or sign up and we'll see you at the next one.",
+  },
+];
