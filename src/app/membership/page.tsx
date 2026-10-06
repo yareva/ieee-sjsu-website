@@ -70,7 +70,7 @@ export default function MembershipPage() {
       <section data-no-reveal className="m-hero">
         <div className="home-container">
           <p className="home-kicker">Membership</p>
-          <h1 className="m-title">Join the <span className="home-h2-outline">Garage</span></h1>
+          <h1 className="m-title">Become a <span className="home-h2-outline">Member</span></h1>
           <p className="home-lede m-lede">
             Join IEEE SJSU and unlock access to exclusive technical projects, workshops, and networking events.
             To become an official member, fill out the sign-up form.

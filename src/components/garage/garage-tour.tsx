@@ -22,10 +22,11 @@ import './garage.css';
 // three.js is only loaded in the browser (dynamic import), so it never runs
 // on the server and doesn't weigh down the rest of the site.
 
-const CONFIG: Record<Tour, { stopVh: number; stops: number; fadeFrom: number; title: string }> = {
-  // stops = shots after the first one; must match TOURS in scene.ts
-  home:   { stopVh: 90,  stops: 5, fadeFrom: 4.35, title: 'Welcome to Innovation Garage: IEEE SJSU Student Branch' },
-  events: { stopVh: 110, stops: 1, fadeFrom: 0.5,  title: 'Featured Events' },
+const CONFIG: Record<Tour, { stopVh: number; stops: number; fadeFrom: number; tail: number; title: string }> = {
+  // stops = shots after the first one; must match TOURS in scene.ts.
+  // tail = how long (in stops) the faded frame holds before the page moves on
+  home:   { stopVh: 90,  stops: 5, fadeFrom: 4.95, tail: 0.45, title: 'Welcome to Innovation Garage: IEEE SJSU Student Branch' },
+  events: { stopVh: 110, stops: 1, fadeFrom: 0.72, tail: 0.02, title: 'Featured Events' },
 };
 const HOME_DOTS = ['Welcome', ...homeStops.map((s) => s.title), 'Our Office'];
 
@@ -38,10 +39,12 @@ export function GarageTour({ tour, slides, fadeTo }: {
   /** color the tour fades into at the end — the next section's background */
   fadeTo: string;
 }) {
-  const { stopVh, stops, fadeFrom, title } = CONFIG[tour];
+  const { stopVh, stops, fadeFrom, tail, title } = CONFIG[tour];
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
+  const blinkRef = useRef<HTMLDivElement>(null);
+  const navUntil = useRef(0);
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState<'loading' | 'ready' | 'failed'>('loading');
 
@@ -57,13 +60,40 @@ export function GarageTour({ tour, slides, fadeTo }: {
 
     const progress = () => {
       const stop = (window.innerHeight * stopVh) / 100;
-      return clamp(-section.getBoundingClientRect().top / stop, 0, stops);
+      // runs on into the tail, where the camera holds and the fade happens
+      return clamp(-section.getBoundingClientRect().top / stop, 0, stops + tail);
+    };
+    // Scrolling down plays the tour; scrolling back up just shows the
+    // landing shot (the welcome screen / the projector) instead of running
+    // the whole tour in reverse. Switching between the two cuts straight to
+    // the new shot behind a quick fade.
+    let lastY = window.scrollY;
+    let goingUp = false;
+    let shown = Math.min(progress(), stops);
+    const blink = () => {
+      if (reduce) return;
+      blinkRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 420, easing: 'ease-out' });
     };
     const onScroll = () => {
-      const p = progress();
-      scene?.setProgress(p);
-      if (fadeRef.current) fadeRef.current.style.opacity = String(clamp((p - fadeFrom) / (stops - fadeFrom), 0, 1));
-      const idx = Math.round(p);
+      const y = window.scrollY;
+      if (performance.now() < navUntil.current) goingUp = false;   // a dot was clicked: follow it
+      else if (y < lastY - 2) goingUp = true;
+      else if (y > lastY + 2) goingUp = false;
+      lastY = y;
+      const raw = progress();
+      // the fade always follows the real scroll position, so scrolling back
+      // up fades the landing shot in again
+      const fade = clamp((raw - fadeFrom) / (stops + tail - fadeFrom), 0, 1);
+      const shot = goingUp ? 0 : Math.min(raw, stops);
+      if (scene && Math.abs(shot - shown) > 0.6) {
+        scene.jump(shot);
+        if (fade < 0.95) blink();       // no need when the fade already hides the cut
+      } else {
+        scene?.setProgress(shot);
+      }
+      shown = shot;
+      if (fadeRef.current) fadeRef.current.style.opacity = String(fade);
+      const idx = Math.round(shot);
       if (idx !== lastIdx) { lastIdx = idx; setActive(idx); }
     };
     const onResize = () => scene?.resize();
@@ -121,12 +151,13 @@ export function GarageTour({ tour, slides, fadeTo }: {
       io.disconnect();
       scene?.dispose();
     };
-  }, [tour, slides, stopVh, stops, fadeFrom]);
+  }, [tour, slides, stopVh, stops, fadeFrom, tail]);
 
   const jumpTo = (i: number) => {
     const section = sectionRef.current;
     if (!section) return;
     const top = section.getBoundingClientRect().top + window.scrollY;
+    navUntil.current = performance.now() + 1600;
     window.scrollTo({ top: top + (i * window.innerHeight * stopVh) / 100, behavior: 'smooth' });
   };
 
@@ -138,12 +169,13 @@ export function GarageTour({ tour, slides, fadeTo }: {
       ref={sectionRef}
       data-no-reveal
       className="garage"
-      style={{ height: `calc(100dvh + ${(stops + 0.3) * stopVh}vh)` }}
+      style={{ height: `calc(100dvh + ${(stops + tail) * stopVh}vh)` }}
     >
       <div className={`garage-frame garage-${status}`}>
         <canvas ref={canvasRef} className="garage-canvas" aria-hidden="true" />
 
-        <h1 className="sr-only">{title}</h1>
+        {/* the events page's heading is in the showcase that follows */}
+        {tour === 'home' && <h1 className="sr-only">{title}</h1>}
 
         {/* shown if WebGL isn't available */}
         {status === 'failed' && (
@@ -160,13 +192,26 @@ export function GarageTour({ tour, slides, fadeTo }: {
           </div>
         )}
 
+        {/* scroll cue: a soft bobbing arrow (home), or thin chevrons that
+            light up one after another (events) */}
         <button
           type="button"
-          className={`garage-hint ${tour === 'events' ? 'garage-hint-quick' : ''} ${active === 0 ? 'on' : ''}`}
+          aria-label="Scroll down"
+          className={`garage-arrow garage-arrow-${tour} ${active === 0 ? 'on' : ''}`}
           onClick={() => jumpTo(1)}
           tabIndex={active === 0 ? 0 : -1}
         >
-          {tour === 'home' ? 'Scroll to enter' : 'Scroll to see them'} <span aria-hidden="true">▼</span>
+          <svg viewBox="0 0 40 60" aria-hidden="true">
+            {tour === 'home' ? (
+              <path d="M8 22 L20 34 L32 22" />
+            ) : (
+              <>
+                <path d="M10 12 L20 22 L30 12" />
+                <path d="M10 26 L20 36 L30 26" />
+                <path d="M10 40 L20 50 L30 40" />
+              </>
+            )}
+          </svg>
         </button>
 
         {/* text panel for the current stop (home) */}
@@ -238,6 +283,8 @@ export function GarageTour({ tour, slides, fadeTo }: {
 
         {/* fades into the next section at the end of the tour */}
         <div ref={fadeRef} className="garage-fade" style={{ background: fadeTo }} aria-hidden="true" />
+        {/* covers the cut when the view jumps (see onScroll) */}
+        <div ref={blinkRef} className="garage-fade" style={{ background: fadeTo }} aria-hidden="true" />
       </div>
     </section>
   );

@@ -81,6 +81,8 @@ export function Footer() {
       <div className="border-t border-white/10 px-8 md:px-16 py-5 text-center">
         <p className="text-xs text-white/40">
           © {new Date().getFullYear()} <span className="font-bold text-white/70">IEEE SJSU Student Branch</span> — All Rights Reserved
+          <span className="mx-2">·</span>
+          <Link href="/admin" className="hover:text-white/70 transition-colors">Officer login</Link>
         </p>
       </div>
 

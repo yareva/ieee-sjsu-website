@@ -2,15 +2,22 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AnimatedSection } from '@/components/animated-section';
 import { DearFlipBook } from '@/components/dearflip-book';
-import { GoogleCalendar, CALENDAR_URL } from '@/components/google-calendar';
+import { CALENDAR_URL } from '@/components/google-calendar';
 import { GarageTour } from '@/components/garage/garage-tour';
 import { CountUp } from '@/components/home-extras';
+import { UpcomingAndCalendar } from '@/components/upcoming-events';
 import { clubStats, sponsorshipPacketUrl, sponsorshipPacketWebUrl } from '@/lib/data';
+import { getSiteContent } from '@/lib/content';
 import './home.css';
+
+// Refetch events at most once a minute; /admin also refreshes this page
+// right after any change (see app/api/revalidate).
+export const revalidate = 60;
 
 // Home page. Follows the light/dark switch in the navbar; colors are the
 // tokens at the top of home.css.
-export default function Home() {
+export default async function Home() {
+  const content = await getSiteContent();
   return (
     <main className="home flex flex-col min-h-screen">
       <Navbar themeToggle />
@@ -18,21 +25,19 @@ export default function Home() {
       {/* ── 3D LAB TOUR: terminal → room → scope → multimeter → into the office ── */}
       <GarageTour tour="home" fadeTo="var(--bg)" />
 
-      {/* ── CALENDAR ── */}
+      {/* ── UPCOMING EVENTS (managed at /admin) beside the calendar ── */}
       <section className="home-section">
         <div className="home-container">
           <div className="home-head-row">
             <div>
-              <p className="home-kicker">Live schedule</p>
-              <h2 className="home-h2">On the <span className="home-h2-outline">Calendar</span></h2>
+              <p className="home-kicker">Coming up</p>
+              <h2 className="home-h2">Upcoming <span className="home-h2-outline">Events</span></h2>
             </div>
             <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer" className="home-btn home-btn-ghost">
               Add to your calendar
             </a>
           </div>
-          <div className="cal-card">
-            <GoogleCalendar />
-          </div>
+          <UpcomingAndCalendar events={content.upcoming} />
         </div>
       </section>
 

@@ -112,28 +112,30 @@ export class TerminalScreen {
       ctx.globalAlpha = flicker;
       ctx.textAlign = 'center';
 
-      ctx.font = `20px ${this.pixel}`;
-      ctx.fillText('WELCOME TO', W / 2, 92);
-      ctx.font = `46px ${this.pixel}`;
-      ctx.shadowBlur = 18;
-      ctx.fillText('INNOVATION', W / 2, 140);
-      ctx.fillText('GARAGE', W / 2, 202);
+      ctx.font = `28px ${this.pixel}`;
+      ctx.fillText('WELCOME TO', W / 2, 52);
+      ctx.font = `56px ${this.pixel}`;
+      ctx.shadowBlur = 20;
+      ctx.fillText('INNOVATION', W / 2, 106);
+      ctx.fillText('GARAGE', W / 2, 180);
       ctx.shadowBlur = 10;
 
-      ctx.fillRect(W / 2 - 230, 276, 460, 4);
+      ctx.fillRect(W / 2 - 270, 266, 540, 5);
 
-      ctx.font = `30px ${this.mono}`;
+      ctx.font = `40px ${this.mono}`;
       ctx.textAlign = 'left';
       const prompt = '> IEEE SJSU STUDENT BRANCH';
       const pw = ctx.measureText(prompt).width;
-      const px = W / 2 - pw / 2 - 8;
-      ctx.fillText(prompt, px, 304);
-      if (Math.floor(t * 2.2) % 2 === 0) ctx.fillRect(px + pw + 6, 306, 14, 24);
+      const px = W / 2 - pw / 2 - 10;
+      ctx.fillText(prompt, px, 292);
+      if (Math.floor(t * 2.2) % 2 === 0) ctx.fillRect(px + pw + 8, 296, 18, 32);
 
       ctx.textAlign = 'center';
-      ctx.globalAlpha = flicker * 0.7;
-      ctx.font = `26px ${this.mono}`;
-      ctx.fillText('ENGR 376 · SAN JOSE STATE UNIVERSITY', W / 2, 362);
+      ctx.globalAlpha = flicker * 0.8;
+      const place = 'ENGR 376 · SAN JOSÉ STATE UNIVERSITY';
+      let size = 36;
+      do { ctx.font = `${size}px ${this.mono}`; } while (ctx.measureText(place).width > W - 50 && --size > 20);
+      ctx.fillText(place, W / 2, 356);
     }
     ctx.restore();
     this.overlay(1);

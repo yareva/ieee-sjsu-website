@@ -195,7 +195,7 @@ export const pastEvents: Event[] = [
 // featured: shown large on the projects page + homepage carousel
 // workshops: shown as a grid on the projects page
 
-export type ProjectCategory = 'Active Project' | 'Industry Challenge' | 'Speaker Event' | 'Workshop' | 'Networking';
+export type ProjectCategory = 'Project' | 'Industry Challenge' | 'Speaker Event' | 'Workshop' | 'Networking';
 
 export interface Project {
   id: string;
@@ -211,7 +211,7 @@ export const featuredProjects: Project[] = [
   {
     id: 'proj-ecg',
     title: 'ECG Wearable Monitor',
-    category: 'Active Project',
+    category: 'Project',
     description: 'A student-built wearable ECG device capable of real-time heart rate monitoring and arrhythmia detection. Members learned the components and practiced soldering beforehand, then put it all together — PCB assembly and embedded firmware included.',
     date: 'Spring 2026',
     image: '/ECG Workshop Soldering.jpg',
@@ -228,9 +228,9 @@ export const featuredProjects: Project[] = [
   },
   {
     id: 'proj-englehart',
-    title: 'QSpice Workshop with Mike Englehart',
+    title: 'QSpice Workshop with Mike Engelhardt',
     category: 'Speaker Event',
-    description: 'Circuit simulation workshop hosted by industry engineer Mike Englehart — covering real-world EE career paths, embedded systems design, and hands-on QSpice simulation techniques.',
+    description: 'Circuit simulation workshop with Mike Engelhardt, the creator of LTspice and QSpice, covering real-world EE career paths, embedded systems design, and hands-on QSpice simulation techniques.',
     date: 'Fall 2025',
     image: '/QSpice Intro Presentation.jpg',
     images: ['/QSpice Intro Presentation.jpg'],
@@ -343,12 +343,12 @@ export interface HomeStop {
 
 export const homeStops: HomeStop[] = [
   {
-    prompt: 'C:\> TYPE ABOUT.TXT',
+    prompt: 'C:\\> TYPE ABOUT.TXT',
     title: 'About Us',
-    body: "IEEE SJSU is San José State's student branch of IEEE, the world's largest technical professional organization. Our home base is the Innovation Garage, our lab in ENGR 376, where members build, test and learn together.",
+    body: "IEEE SJSU is San José State's student branch of IEEE, the world's largest technical professional organization. Our home base is the Innovation Garage, our clubroom in the Engineering Building, room 376, where members build, test and learn together.",
   },
   {
-    prompt: 'C:\> RUN WORKSHOPS.EXE',
+    prompt: 'C:\\> RUN WORKSHOPS.EXE',
     title: 'What We Do',
     body: 'Everything is hands-on:',
     points: [
@@ -358,8 +358,8 @@ export const homeStops: HomeStop[] = [
     ],
   },
   {
-    prompt: 'C:\> JOIN.BAT',
-    title: 'Join the Garage',
-    body: "Membership is open to every SJSU student, not just engineering majors. Come to an event, stop by ENGR 376, or sign up and we'll see you at the next one.",
+    prompt: 'C:\\> CD ROOM376',
+    title: 'Join Us in Room 376',
+    body: "The room is open and available to everyone. Our events are for members, and membership is open to every SJSU student, not just engineering majors.",
   },
 ];

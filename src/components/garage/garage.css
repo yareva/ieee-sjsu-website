@@ -52,37 +52,59 @@
   pointer-events: none;
 }
 
-/* scroll hint under the terminal */
-.garage-hint {
+/* scroll cue at the bottom of the first shot */
+.garage-arrow {
   position: absolute;
+  z-index: 3;
   left: 50%;
-  bottom: 5dvh;
-  transform: translate(-50%, 10px);
-  padding: 0.55rem 1.1rem;
-  border: 1px solid rgba(61, 255, 126, 0.45);
-  background: rgba(3, 10, 6, 0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  color: #3dff7e;
-  font-family: var(--font-vt323), monospace;
-  font-size: 1.3rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  bottom: 3dvh;
+  width: 44px;
+  height: 66px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffffff;
   cursor: pointer;
+  transform: translate(-50%, 10px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.garage-hint.on {
+.garage-arrow.on {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0);
   transition-delay: 3.5s; /* after the terminal has booted */
 }
-.garage-hint-quick.on { transition-delay: 0.3s; }
-.garage-hint span { display: inline-block; animation: hint-bob 1.4s ease-in-out infinite; }
-@keyframes hint-bob { 50% { transform: translateY(3px); } }
-.garage-hint:focus-visible { outline: 2px solid #3dff7e; outline-offset: 3px; }
+.garage-arrow-events.on { transition-delay: 1.4s; }  /* after the projector warms up */
+.garage-arrow svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.45));
+}
+/* home: one soft arrow, gently bobbing */
+.garage-arrow-home svg { stroke-width: 2.2; opacity: 0.85; animation: arrow-bob 2.2s ease-in-out infinite; }
+@keyframes arrow-bob {
+  0%, 100% { transform: translateY(-4px); opacity: 0.55; }
+  50%      { transform: translateY(5px);  opacity: 0.95; }
+}
+/* events: three thin chevrons lighting up in sequence */
+.garage-arrow-events svg { stroke-width: 1.4; }
+.garage-arrow-events path { opacity: 0.15; animation: chevron-seq 1.8s ease-in-out infinite; }
+.garage-arrow-events path:nth-child(2) { animation-delay: 0.2s; }
+.garage-arrow-events path:nth-child(3) { animation-delay: 0.4s; }
+@keyframes chevron-seq {
+  0%, 100% { opacity: 0.15; }
+  30%      { opacity: 1; }
+  60%      { opacity: 0.15; }
+}
+.garage-arrow:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 8px; }
+[data-theme='light'] .garage-arrow-events { color: #0b1626; }
+[data-theme='light'] .garage-arrow-events svg { filter: none; }
 
 /* text panel: a little terminal window */
 .garage-panel-wrap {
@@ -98,9 +120,9 @@
   position: relative;
   padding: clamp(22px, 2.8vw, 36px);
   border: 2px solid rgba(61, 255, 126, 0.55);
-  background: rgba(3, 10, 6, 0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* solid-ish rather than a backdrop blur: blurring a live 3D canvas every
+     frame is expensive and made scrolling stutter */
+  background: rgba(3, 10, 6, 0.9);
   box-shadow: 0 0 0 6px rgba(3, 10, 6, 0.5), 0 0 40px rgba(61, 255, 126, 0.15), 0 30px 70px -30px rgba(0, 0, 0, 0.8);
   color: #c9ffd9;
   transform-origin: 0 50%;
@@ -270,7 +292,7 @@
   .garage-stats dd { font-size: 1.1rem; }
   .garage-ctas { margin-top: 0.8rem; }
   .garage-dots { right: 10px; top: 84px; transform: none; flex-direction: row; gap: 8px; }
-  .garage-hint { bottom: 7dvh; font-size: 1.1rem; }
+  .garage-arrow { bottom: 5dvh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -280,8 +302,10 @@
   .garage-points li,
   .garage-stats,
   .garage-ctas,
-  .garage-hint span,
+  .garage-arrow svg,
+  .garage-arrow path,
   .garage-cursor { animation: none !important; }
-  .garage-hint.on { transition-delay: 0s; }
+  .garage-arrow-events path { opacity: 0.8; }
+  .garage-arrow.on { transition-delay: 0s; }
 }
 
